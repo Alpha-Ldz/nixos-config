@@ -8,6 +8,7 @@
   imports =
     [ 
       ../../modules/system.nix
+      ../../modules/hyprland.nix
 
       ./hardware-configuration.nix
     ];
@@ -46,5 +47,4 @@
 
     patches = [ rcu_patch ];
   };
-
 }

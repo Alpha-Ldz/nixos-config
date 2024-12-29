@@ -24,8 +24,8 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${username} = {
     isNormalUser = true;
-    description = "laptop";
-    extraGroups = [ "networkmanager" "wheel" ];
+    description = "${username}";
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.zsh;
     packages = with pkgs; [];
   };
@@ -70,7 +70,10 @@
 
   services.xserver.videoDrivers = ["nvidia"];
 
+  sound.enable = true;
+
   hardware = {
+	  pulseaudio.enable = false;
     opengl.enable = true;
     nvidia = {
       modesetting.enable = true;
@@ -80,4 +83,21 @@
       nvidiaSettings = true;
     };
   };
+	
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    audio.enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+    wireplumber.enable = true;
+  };
+
+	virtualisation.docker.enable = true;
+	virtualisation.docker.daemon.settings = {
+  	data-root = "/home/${username}/DockerStorage";
+  };
+
 }
