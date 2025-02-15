@@ -3,7 +3,7 @@
 	programs.kitty = {
 		enable = true;
 
-		theme = "Bluloco Dark";
+		theme = "Bluloco Light";
 
 		font = {
 			name = "Fira Code";

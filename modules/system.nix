@@ -31,7 +31,6 @@
   };
 
   programs.zsh.enable = true;
-  
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -43,13 +42,16 @@
     git
     kitty
     rofi
+		kubectl
+		kubernetes-helm
+		vscode
   ];
   fonts = {
     packages = with pkgs; [
       material-design-icons
 
       noto-fonts
-      noto-fonts-cjk
+      noto-fonts-cjk-sans
       noto-fonts-emoji
 
       (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
@@ -69,8 +71,6 @@
   };
 
   services.xserver.videoDrivers = ["nvidia"];
-
-  sound.enable = true;
 
   hardware = {
 	  pulseaudio.enable = false;
@@ -96,8 +96,8 @@
   };
 
 	virtualisation.docker.enable = true;
-	virtualisation.docker.daemon.settings = {
-  	data-root = "/home/${username}/DockerStorage";
-  };
 
+	networking.hosts = {
+		"192.168.1.96" = ["mainsail-home.lab"];
+	};
 }

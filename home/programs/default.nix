@@ -3,6 +3,6 @@
     ./common.nix
     ./browser.nix
     ./shell
-    ./nvim
+    ./nixvim
   ];
 }

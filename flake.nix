@@ -1,15 +1,20 @@
 {
 	description = "NixOS configuration for Peuleu";
 	inputs = {
-		nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
-		home-manager.url = "github:nix-community/home-manager/release-24.05";
+		nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+		home-manager.url = "github:nix-community/home-manager/release-24.11";
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
 		hyprland.url = "github:hyprwm/Hyprland";
+		nixvim = {
+			url = "github:nix-community/nixvim/nixos-24.11";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
 	};
 	outputs = inputs @ {
 		self,
 			nixpkgs,
 			home-manager,
+			nixvim,
 			...
 	}: {
 		nixosConfigurations = {
@@ -23,18 +28,19 @@
 
 					modules = [
 						./hosts/laptop
-							./users/${username}/nixos.nix
+						./users/${username}/nixos.nix
 
-							home-manager.nixosModules.home-manager
-							{
-								home-manager.useGlobalPkgs = true;
-								home-manager.useUserPackages = true;
+						home-manager.nixosModules.home-manager
+						{
+							home-manager.useGlobalPkgs = true;
+							home-manager.useUserPackages = true;
 
-								home-manager.extraSpecialArgs = inputs // specialArgs;
-								home-manager.users.${username} = import ./users/${username}/home.nix;
-							}
+							home-manager.extraSpecialArgs = inputs // specialArgs;
+							home-manager.users.${username} = import ./users/${username}/home.nix;
+						}
 					];
 				};
+
 			sleeper = let
 				username = "peuleu";
 			specialArgs = {inherit username inputs;};
