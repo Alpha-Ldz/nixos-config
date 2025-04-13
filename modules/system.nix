@@ -1,4 +1,4 @@
-{ pkgs, lib, username, ... }:
+{ inputs, pkgs, username, ... }:
 {
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -32,20 +32,34 @@
 
   programs.zsh.enable = true;
 
+  nixpkgs.overlays = [
+    (final: _: {
+      unstable = import inputs.nixpkgs-unstable {
+        inherit (final.stdenv.hostPlatform) system;
+        inherit (final) config;
+      };
+    })
+  ];
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  environment.systemPackages = with pkgs; [
-    neovim 
-    git
-    kitty
-    rofi
-		kubectl
-		kubernetes-helm
-		vscode
+  environment.systemPackages = [
+    pkgs.neovim 
+    pkgs.git
+    pkgs.kitty
+    pkgs.rofi
+	  pkgs.kubectl
+		pkgs.kubernetes-helm
+		pkgs.vscode
+    pkgs.poetry
+    pkgs.jetbrains.pycharm-professional
+    pkgs.jupyter
+    pkgs.moonlight-qt
   ];
+
   fonts = {
     packages = with pkgs; [
       material-design-icons
@@ -94,10 +108,17 @@
     jack.enable = true;
     wireplumber.enable = true;
   };
-
 	virtualisation.docker.enable = true;
 
 	networking.hosts = {
 		"192.168.1.96" = ["mainsail-home.lab"];
 	};
+
+  networking.networkmanager.enable = false;
+  networking.wireless = {
+    enable = true;
+    networks."Freebox-2AF02C".pskRaw = "491ace97a34cdff2bc7afc7ffdff6c26a86262e787a5a8318e71c909d858b26b";
+    extraConfig = "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=wheel";
+  };
 }
+

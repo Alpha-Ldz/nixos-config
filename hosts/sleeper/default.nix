@@ -18,14 +18,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "sleeper"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
+  # TODO Move networking config here 
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";
@@ -47,4 +41,23 @@
 
     patches = [ rcu_patch ];
   };
+
+
+  environment.systemPackages = [
+    pkgs.unstable.ollama
+  ];
+
+  services.sunshine = {
+    enable = true;
+    #package = pkgs.sunshine.override {
+    #  cudaSupport = true;
+    #};
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+  };
+  services.avahi.publish.enable = true;
+  services.avahi.publish.userServices = true;
+
+
 }

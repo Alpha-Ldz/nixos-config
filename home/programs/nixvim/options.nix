@@ -1,6 +1,7 @@
 {pkgs, inputs, ...}: {
   programs = { 
     nixvim = {
+      clipboard.providers.wl-copy.enable = true;
       opts = {
         updatetime = 100; # faster completion
         number = true;
