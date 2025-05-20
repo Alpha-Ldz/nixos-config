@@ -5,5 +5,6 @@
     ./lualine.nix
     ./treesitter.nix
     ./neotree.nix
+    ./devicons.nix
   ];
 }

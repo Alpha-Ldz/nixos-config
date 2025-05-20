@@ -5,7 +5,11 @@
       plugins = {
         lualine = {
           enable = true;
-          theme = "auto";
+          settings = {
+            options = {
+              theme = "auto";
+            };
+          };
         };
       };
     };

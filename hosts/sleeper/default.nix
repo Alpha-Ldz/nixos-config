@@ -8,6 +8,7 @@
   imports =
     [ 
       ../../modules/system.nix
+      ../../modules/desktop.nix
       ../../modules/hyprland.nix
 
       ./hardware-configuration.nix
@@ -45,6 +46,7 @@
 
   environment.systemPackages = [
     pkgs.unstable.ollama
+    pkgs.steam
   ];
 
   services.sunshine = {
