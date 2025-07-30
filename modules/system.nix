@@ -56,11 +56,6 @@
     pkgs.k9s
   ];
 
-  networking.networkmanager.enable = false;
-  networking.wireless = {
-    enable = true;
-    networks."Freebox-2AF02C".pskRaw = "491ace97a34cdff2bc7afc7ffdff6c26a86262e787a5a8318e71c909d858b26b";
-    extraConfig = "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=wheel";
-  };
+  networking.networkmanager.enable = true;
 }
 
