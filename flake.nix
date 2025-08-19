@@ -10,6 +10,9 @@
       url = "github:nix-community/nixvim/nixos-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    darwin.url = "github:LnL7/nix-darwin";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs = inputs @ {
     self,
@@ -17,6 +20,7 @@
     home-manager,
     nixvim,
     nixpkgs-unstable,
+    darwin,
     ...
   }: {
     nixosConfigurations = {
@@ -67,5 +71,24 @@
           ];
         };
     };
+
+    # Nouveau bloc pour macOS
+    darwinConfigurations = {
+      "MBP-GQXM4FQHHJ.system" = darwin.lib.darwinSystem {
+        system = "x86_64-darwin"; # ou aarch64-darwin si tu es sur Apple Silicon
+        specialArgs = { username = "peuleu"; inherit inputs; };
+        modules = [
+
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit inputs; username = "peuleu"; };
+            home-manager.users.peuleu = import ./users/peuleu/home.nix;
+          }
+        ];
+      };
+    };
+
   };
 }
