@@ -75,7 +75,7 @@
         myuser = "peuleu_server";
         specialArgs = {inherit inputs;};
       in
-        "${myuser}" = home-manager.lib.homeManagerConfiguration {
+        home-manager.lib.homeManagerConfiguration {
           inherit specialArgs;
           modules = [
             ./test/home.nix
