@@ -73,11 +73,11 @@
       rpi5 = let
         system = "aarch64-linux";
         myuser = "peuleu_server";
-        pkgs = nixpkgs.legacyPackages.${system};
+        specialArgs = {inherit username inputs;};
       in
       {
         "${myuser}" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
+          inherit specialArgs;
           modules = [
             ./test/home.nix
           ];

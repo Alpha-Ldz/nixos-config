@@ -10,7 +10,7 @@ let
 in {
   home.username = "${myuser}";
   home.homeDirectory = "${myhome}";
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.11";
   home.packages = with pkgs; [
     neofetch
     neovim
@@ -33,11 +33,6 @@ in {
       nix-direnv = {
         enable = true;
       };
-    };
-    git = {
-      enable = true;
-      userName = "stuart-warren";
-      userEmail = "stuartwarren83@gmail.com";
     };
     ssh = {
       enable = true;
