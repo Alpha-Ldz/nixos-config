@@ -73,7 +73,7 @@
       rpi5 = let
         system = "aarch64-linux";
         myuser = "peuleu_server";
-        specialArgs = {inherit username inputs;};
+        specialArgs = {inherit inputs;};
       in
       {
         "${myuser}" = home-manager.lib.homeManagerConfiguration {
