@@ -23,7 +23,7 @@
     ...
   }: let
      system = "aarch64-linux";
-     myuser = "peuleu_server";
+     myuser = "rpi5";
      pkgs = nixpkgs.legacyPackages.${system};
   in {
     homeConfigurations = {
