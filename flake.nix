@@ -22,9 +22,7 @@
     nixpkgs-unstable,
     ...
   }: let
-     # system = "aarch64-linux"; If you are running on ARM powered computer
      system = "aarch64-linux";
-     # myuser = builtins.getEnv "USER";
      myuser = "peuleu_server";
      pkgs = nixpkgs.legacyPackages.${system};
   in {
