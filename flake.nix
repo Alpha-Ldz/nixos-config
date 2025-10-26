@@ -75,7 +75,7 @@
     homeConfigurations = {
       peuleu_server = let
         system = "aarch64-linux";
-        pkgs = nixpkgs;
+        pkgs = nixpkgs.legacyPackages.${system};
       in
           home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
