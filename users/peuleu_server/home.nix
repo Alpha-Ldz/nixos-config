@@ -13,10 +13,6 @@ in {
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
-  imports = [
-    ../../home/programs
-  ];
-
   home.username = "${myuser}";
   home.homeDirectory = "${myhome}";
   home.stateVersion = "24.11";
