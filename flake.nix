@@ -76,12 +76,18 @@
         pkgs = nixpkgs.legacyPackages.${system};
       in
         nixpkgs.lib.nixosSystem {
-            "${username}" = home-manager.lib.homeManagerConfiguration {
-              inherit pkgs;
-              modules = [
-                ./test/home.nix
-              ];
-            };
+          inherit specialArgs system pkgs;
+
+          modules = [
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.extraSpecialArgs = inputs // specialArgs;
+              home-manager.users.${username} = import ./test/home.nix;
+            }
+          ];
         };
     };
   };
