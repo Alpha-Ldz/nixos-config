@@ -80,7 +80,7 @@
           home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            ./test/home.nix
+            ./users/${username}/home.nix
           ];
         };
     };
