@@ -23,16 +23,18 @@
     ...
   }: let
      system = "aarch64-linux";
-     myuser = "rpi5";
+     myuser = "peuleu_server";
      pkgs = nixpkgs.legacyPackages.${system};
   in {
-    homeConfigurations = {
+    rpi5 = {
+      homeConfigurations = {
         "${myuser}" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
             ./test/home.nix
           ];
         };
+      };
     };
   };
 }
