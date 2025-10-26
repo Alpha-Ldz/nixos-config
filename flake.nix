@@ -73,15 +73,11 @@
 
   # Home manager configurations
     homeConfigurations = {
-      peuleu_server = let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in {
-        home-manager.lib.homeManagerConfiguration {
-          inherit nixpkgs;
-          modules = [
-            ./test/home.nix
-          ];
-        };
+      peuleu_server = home-manager.lib.homeManagerConfiguration {
+        inherit nixpkgs;
+        modules = [
+          ./test/home.nix
+        ];
       };
     };
   };
