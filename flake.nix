@@ -76,14 +76,12 @@
         pkgs = nixpkgs.legacyPackages.${system};
       in
         nixpkgs.lib.nixosSystem {
-          homeConfigurations = {
             "${username}" = home-manager.lib.homeManagerConfiguration {
               inherit pkgs;
               modules = [
                 ./test/home.nix
               ];
             };
-          };
         };
     };
   };
