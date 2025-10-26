@@ -23,7 +23,6 @@ in {
      nfs-utils
      git
   ];
-  services.openssh.enable = true;
   programs = {
     home-manager.enable = true;
   };

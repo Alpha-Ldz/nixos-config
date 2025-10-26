@@ -69,6 +69,16 @@
             }
           ];
         };
+
+      rpi5 = let
+        system = "aarch64-linux";
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+        pkgs.lib.nixosSystem {
+          modules = [
+            ./hosts/rpi5
+          ];
+        };
     };
 
     # Home manager configurations
