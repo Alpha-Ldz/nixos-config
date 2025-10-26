@@ -26,15 +26,12 @@
      myuser = "peuleu_server";
      pkgs = nixpkgs.legacyPackages.${system};
   in {
-    rpi5 = {
-      homeConfigurations = {
-        "${myuser}" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [
-
-            ./test/home.nix
-          ];
-        };
+    homeConfigurations = {
+      "${myuser}" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [
+          ./test/home.nix
+        ];
       };
     };
   };

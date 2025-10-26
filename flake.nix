@@ -69,25 +69,16 @@
             }
           ];
         };
+    };
 
-      rpi5 = let
-        username = "peuleu_server";
-        system = "aarch64-linux";
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-        nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          inherit pkgs;
-
-          modules = [
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./test/home.nix;
-            }
-          ];
-        };
+  # Home manager configurations
+    homeConfigurations = {
+      peuleu_server = home-manager.lib.homeManagerConfiguration {
+        inherit nixpkgs;
+        modules = [
+          ./test/home.nix
+        ];
+      };
     };
   };
 }
