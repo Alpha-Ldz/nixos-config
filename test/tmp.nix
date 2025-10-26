@@ -3,12 +3,9 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hyprland.url = "github:hyprwm/Hyprland";
-
-    home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixvim = {
       url = "github:nix-community/nixvim/nixos-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -68,22 +65,6 @@
               home-manager.users.${username} = import ./users/${username}/home.nix;
             }
           ];
-        };
-
-      rpi5 = let
-        username = "peuleu_server";
-        system = "aarch64-linux";
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-        nixpkgs.lib.nixosSystem {
-          homeConfigurations = {
-            "${username}" = home-manager.lib.homeManagerConfiguration {
-              inherit pkgs;
-              modules = [
-                ./test/home.nix
-              ];
-            };
-          };
         };
     };
   };
