@@ -48,7 +48,6 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feature/add-rpi5-config",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/pierre-louis/.config/nixos-config/hosts/nixos-node-1",
@@ -105,7 +104,7 @@
       <workItem from="1761311242964" duration="2000" />
       <workItem from="1761394211120" duration="17089000" />
       <workItem from="1762006851439" duration="1919000" />
-      <workItem from="1762008817547" duration="8633000" />
+      <workItem from="1762008817547" duration="9371000" />
     </task>
     <servers />
   </component>
