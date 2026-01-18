@@ -54,6 +54,7 @@
     pkgs.kubectl
     pkgs.kubernetes-helm
     pkgs.k9s
+    pkgs.claude-code
   ];
 
   networking.networkmanager.enable = true;

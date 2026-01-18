@@ -6,9 +6,9 @@
 
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
 
-      (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
+      # (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
     ];
   };
 
@@ -51,7 +51,7 @@
 	virtualisation.docker.enable = true;
 
 	networking.hosts = {
-		"192.168.1.96" = ["mainsail-home.lab"];
+		"192.168.1.17" = ["mainsail-home.lab"];
   };
 
 	environment.systemPackages = [

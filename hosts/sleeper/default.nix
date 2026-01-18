@@ -6,7 +6,7 @@
 
 {
   imports =
-    [ 
+    [
       ../../modules/system.nix
       ../../modules/desktop.nix
       ../../modules/hyprland.nix
@@ -20,9 +20,6 @@
 
   networking.hostName = "sleeper"; # Define your hostname.
 
-  # TODO Move networking config here 
-
-  # Set your time zone.
   time.timeZone = "Europe/Paris";
 
   system.stateVersion = "24.05"; # Did you read the comment?
@@ -60,6 +57,4 @@
   };
   services.avahi.publish.enable = true;
   services.avahi.publish.userServices = true;
-
-
 }

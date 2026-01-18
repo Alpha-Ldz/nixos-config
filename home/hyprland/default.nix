@@ -111,13 +111,8 @@
         preserve_split = "yes";
       };
 
-      gestures = {
-        workspace_swipe = "off";
-      };
+      monitor = "HDMI-A-2, 3840x1080, auto, 1";
 
-      windowrule = [
-        "float,^(rofi)$"
-      ];
 
     };
   };
