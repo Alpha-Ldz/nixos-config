@@ -1,14 +1,23 @@
-{pkgs, inputs, ...}: {
+{ pkgs, inputs, lib, ... }:
+{
   imports = [
-    ../../home/core.nix
-    ../../home/hyprland
+    # Core home-manager config
+    ../../home/profiles/base.nix
 
+    # Programs (cross-platform)
     ../../home/programs
+
+    # Linux-specific (always imported for NixOS)
+    ../../home/desktop/hyprland
+    ../../home/platform/linux.nix
+
+    # For macOS: comment out hyprland and linux.nix, uncomment macos.nix
+    # ../../home/platform/macos.nix
   ];
-  programs = { 
-	  git = {
-			userName = "Alpha-Ldz";
-			userEmail = "pllandouzi@gmail.com";
-	  };
+
+  # User-specific git config
+  programs.git = {
+    userName = "Alpha-Ldz";
+    userEmail = "pllandouzi@gmail.com";
   };
 }

@@ -1,6 +1,8 @@
 { inputs }:
 let
   inherit (inputs) nixpkgs home-manager;
+  # Import our custom versions
+  versions = (import ./default.nix { inherit inputs; }).versions;
 in
 {
   # Build a NixOS host with home-manager integration
@@ -12,7 +14,9 @@ in
   }:
   let
     # Create specialArgs for this host
-    specialArgs = { inherit inputs; };
+    specialArgs = {
+      inherit inputs versions;
+    };
   in
   nixpkgs.lib.nixosSystem {
     inherit system;

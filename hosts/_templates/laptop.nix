@@ -1,5 +1,5 @@
 # Template for a laptop machine
-{ ... }:
+{ versions, ... }:
 {
   imports = [
     # Profiles
@@ -25,5 +25,5 @@
   networking.hostName = "CHANGEME";
   time.timeZone = "Europe/Paris";
 
-  system.stateVersion = "25.11";
+  system.stateVersion = versions.nixos;
 }

@@ -1,5 +1,5 @@
 # Template for a standard desktop workstation
-{ ... }:
+{ versions, ... }:
 {
   imports = [
     # Profiles - what kind of machine is this
@@ -32,5 +32,5 @@
   networking.hostName = "CHANGEME";
   time.timeZone = "Europe/Paris";
 
-  system.stateVersion = "25.11";
+  system.stateVersion = versions.nixos;
 }

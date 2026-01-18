@@ -1,13 +1,5 @@
+{ pkgs, ... }:
 {
-  pkgs,
-  ...
-}: {
-  programs = {
-    zsh = {
-      enable = true;
-    };
-		k9s = {
-			enable = true;
-		};
-  };
+  # Common programs for all systems
+  programs.zsh.enable = true;
 }

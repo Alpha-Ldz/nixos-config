@@ -1,26 +1,28 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ ... }:
-
+{ versions, ... }:
 {
-  imports =
-    [
-      ../../modules/system.nix
-      ../../modules/desktop.nix
-      ../../modules/hyprland.nix
+  imports = [
+    # Profiles - define what kind of machine this is
+    ../../profiles/base.nix
+    ../../profiles/laptop.nix
+    ../../profiles/development.nix
 
-      ./hardware-configuration.nix
-    ];
+    # Features - optional capabilities
+    ../../features/desktop/hyprland.nix
+    ../../features/hardware/nvidia.nix
+    ../../features/services/docker.nix
 
-  # Bootloader.
+    # Hardware and users
+    ./hardware-configuration.nix
+    ./users.nix
+  ];
+
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Machine-specific settings
   networking.hostName = "laptop";
-
   time.timeZone = "Europe/Paris";
 
-  system.stateVersion = "25.11"; # Did you read the comment?
+  system.stateVersion = versions.nixos;
 }

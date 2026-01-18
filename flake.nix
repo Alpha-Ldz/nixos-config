@@ -1,71 +1,54 @@
 {
-  description = "NixOS configuration for Peuleu";
+  description = "NixOS configuration with profile-oriented architecture";
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprland.url = "github:hyprwm/Hyprland";
     nixvim = {
       url = "github:nix-community/nixvim/nixos-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    home-manager,
-    nixvim,
-    nixpkgs-unstable,
-    ...
-  }: {
+
+  outputs = inputs @ { self, nixpkgs, home-manager, ... }:
+  let
+    # Import lib with version constants and builders
+    lib = import ./lib { inherit inputs; };
+  in {
+    # Expose lib for use in configs
+    inherit lib;
+
+    # NixOS configurations
     nixosConfigurations = {
-      laptop = 
-      let
-        username = "peuleu";
-        specialArgs = {inherit username inputs;};
-      in
-        nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
+      laptop = lib.mkHost {
+        hostname = "laptop";
+        system = "x86_64-linux";
+        users = [ "peuleu" ];
+      };
 
-          modules = [
-            ./hosts/laptop
-            ./users/${username}/nixos.nix
-
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-
-              home-manager.extraSpecialArgs = inputs // specialArgs;
-              home-manager.users.${username} = import ./users/${username}/home.nix;
-            }
-          ];
-        };
-
-      sleeper = let
-        username = "peuleu";
-        specialArgs = {inherit username inputs;};
-      in
-        nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-
-          modules = [
-            ./hosts/sleeper
-            ./users/${username}/nixos.nix
-
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-
-              home-manager.extraSpecialArgs = inputs // specialArgs;
-              home-manager.users.${username} = import ./users/${username}/home.nix;
-            }
-          ];
-        };
+      sleeper = lib.mkHost {
+        hostname = "sleeper";
+        system = "x86_64-linux";
+        users = [ "peuleu" ];
+      };
     };
+
+    # Standalone home-manager configurations (for macOS, non-NixOS Linux)
+    # Uncomment and configure when needed:
+    # homeConfigurations = {
+    #   "peuleu@macos" = home-manager.lib.homeManagerConfiguration {
+    #     pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+    #     modules = [
+    #       ./users/peuleu/home.nix
+    #       { home.username = "peuleu"; home.homeDirectory = "/Users/peuleu"; }
+    #     ];
+    #     extraSpecialArgs = { inherit inputs; };
+    #   };
+    # };
   };
 }

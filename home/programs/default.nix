@@ -1,8 +1,9 @@
 {
   imports = [
     ./common.nix
-    ./browser.nix
+    ./browsers/firefox.nix
     ./shell
-    ./nixvim
+    ./editors/nixvim
+    ./development/kubernetes.nix
   ];
 }

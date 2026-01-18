@@ -8,6 +8,7 @@ Profile-oriented NixOS configuration for easy management of multiple machines.
 nixos-config/
 ├── flake.nix           # Main entry point
 ├── lib/                # Helper functions
+│   ├── default.nix     # Exports versions and builders
 │   └── builders.nix    # Host builder functions
 ├── profiles/           # Machine roles
 │   ├── base.nix       # Core foundation (required)
@@ -133,7 +134,7 @@ sudo nixos-rebuild switch --flake .#laptop
 
   networking.hostName = "my-laptop";
   time.timeZone = "Europe/Paris";
-  system.stateVersion = "25.11";
+  system.stateVersion = versions.nixos;
 }
 ```
 
@@ -172,10 +173,25 @@ User-level configurations in `home/` are cross-platform and can be used on:
 home-manager build --flake .#peuleu@macos
 ```
 
+## Version Management
+
+NixOS and home-manager versions are centralized in `lib/default.nix`:
+
+```nix
+versions = {
+  nixos = "25.11";        # NixOS system version
+  homeManager = "25.05";  # home-manager version
+};
+```
+
+Access them in configs via `versions.nixos` or `versions.homeManager`.
+
+**Note**: `system.stateVersion` should match the NixOS version when the system was first installed and should generally not be changed.
+
 ## Current Machines
 
-- **laptop** - Development laptop with Hyprland, NVIDIA, Docker
-- **sleeper** - Gaming desktop with custom NVIDIA driver, Sunshine streaming
+- **laptop** - Development laptop with Hyprland, NVIDIA, Docker (stateVersion: 25.11)
+- **sleeper** - Gaming desktop with custom NVIDIA driver, Sunshine streaming (stateVersion: 24.05)
 
 ## Tips
 
