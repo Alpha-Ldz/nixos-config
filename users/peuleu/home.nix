@@ -6,13 +6,13 @@
 
     # Programs (cross-platform)
     ../../home/programs
-
-    # Linux-specific (always imported for NixOS)
+  ] ++ lib.optionals pkgs.stdenv.isLinux [
+    # Linux-specific
     ../../home/desktop/hyprland
     ../../home/platform/linux.nix
-
-    # For macOS: comment out hyprland and linux.nix, uncomment macos.nix
-    # ../../home/platform/macos.nix
+  ] ++ lib.optionals pkgs.stdenv.isDarwin [
+    # macOS-specific
+    ../../home/platform/macos.nix
   ];
 
   # User-specific git config

@@ -39,16 +39,19 @@
     };
 
     # Standalone home-manager configurations (for macOS, non-NixOS Linux)
-    # Uncomment and configure when needed:
-    # homeConfigurations = {
-    #   "peuleu@macos" = home-manager.lib.homeManagerConfiguration {
-    #     pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-    #     modules = [
-    #       ./users/peuleu/home.nix
-    #       { home.username = "peuleu"; home.homeDirectory = "/Users/peuleu"; }
-    #     ];
-    #     extraSpecialArgs = { inherit inputs; };
-    #   };
-    # };
+    homeConfigurations = {
+      "peuleu@macos" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+        modules = [
+          ./users/peuleu/home.nix
+          ./home/platform/macos.nix
+          {
+            home.username = "peuleu";
+            home.homeDirectory = "/Users/peuleu";
+          }
+        ];
+        extraSpecialArgs = { inherit inputs; };
+      };
+    };
   };
 }
