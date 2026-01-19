@@ -42,6 +42,20 @@
           desc = "Basculer Neo-tree";
         };
       }
+      {
+        mode = "n";
+        key = "<leader>f";
+        action.__raw = ''
+          function()
+            vim.lsp.buf.format({ async = false })
+          end
+        '';
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Format current buffer";
+        };
+      }
     ];
   };
 }

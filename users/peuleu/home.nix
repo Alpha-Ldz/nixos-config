@@ -17,7 +17,11 @@
 
   # User-specific git config
   programs.git = {
-    userName = "Alpha-Ldz";
-    userEmail = "pllandouzi@gmail.com";
+    settings = {
+      user = {
+        name = "Alpha-Ldz";
+        email = "pllandouzi@gmail.com";
+      };
+    };
   };
 }

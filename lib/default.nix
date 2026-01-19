@@ -3,7 +3,7 @@
   # Version constants
   versions = {
     nixos = "25.11";
-    homeManager = "25.05";
+    homeManager = "25.11";
   };
 
   # Re-export builders

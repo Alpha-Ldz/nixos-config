@@ -175,18 +175,39 @@ home-manager build --flake .#peuleu@macos
 
 ## Version Management
 
-NixOS and home-manager versions are centralized in `lib/default.nix`:
+Versions are managed in two places:
+
+### 1. Flake Inputs (flake.nix)
+For nixpkgs and home-manager input URLs:
+
+```nix
+inputs = let
+  nixosVersion = "25.11";
+  homeManagerVersion = "25.11";
+in {
+  nixpkgs.url = "github:nixos/nixpkgs/nixos-${nixosVersion}";
+  home-manager.url = "github:nix-community/home-manager/release-${homeManagerVersion}";
+  nixvim.url = "github:nix-community/nixvim/nixos-${nixosVersion}";
+  # ...
+};
+```
+
+### 2. System State Versions (lib/default.nix)
+For `system.stateVersion` and `home.stateVersion`:
 
 ```nix
 versions = {
   nixos = "25.11";        # NixOS system version
-  homeManager = "25.05";  # home-manager version
+  homeManager = "25.11";  # home-manager version
 };
 ```
 
 Access them in configs via `versions.nixos` or `versions.homeManager`.
 
-**Note**: `system.stateVersion` should match the NixOS version when the system was first installed and should generally not be changed.
+**Important Notes**:
+- Keep the versions in both files in sync when upgrading
+- `system.stateVersion` should match the NixOS version when the system was first installed
+- `system.stateVersion` should generally not be changed after initial installation
 
 ## Current Machines
 
@@ -228,6 +249,40 @@ nix flake update
 If you get option conflicts, check that:
 - Profiles don't overlap (e.g., don't import both laptop and gaming if they conflict)
 - Features are compatible with chosen profiles
+
+## Version Management
+
+Versions are managed in two places:
+
+### 1. Flake Inputs (flake.nix)
+For nixpkgs and home-manager input URLs:
+
+```nix
+inputs = {
+  nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+  home-manager.url = "github:nix-community/home-manager/release-25.11";
+  nixvim.url = "github:nix-community/nixvim/nixos-25.11";
+  # ...
+};
+```
+
+### 2. System State Versions (lib/default.nix)
+For `system.stateVersion` and `home.stateVersion`:
+
+```nix
+versions = {
+  nixos = "25.11";        # NixOS system version
+  homeManager = "25.11";  # home-manager version
+};
+```
+
+Access them in configs via `versions.nixos` or `versions.homeManager`.
+
+**Important Notes**:
+- Keep the versions in both files in sync when upgrading
+- `system.stateVersion` should match the NixOS version when the system was first installed
+- `system.stateVersion` should generally not be changed after initial installation
+- Due to Nix flake schema limitations, input URLs cannot use variables and must be hardcoded
 
 ## Future Enhancements
 

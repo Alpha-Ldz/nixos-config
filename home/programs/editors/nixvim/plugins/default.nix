@@ -6,5 +6,6 @@
     ./treesitter.nix
     ./neotree.nix
     ./devicons.nix
+    ./telescope.nix
   ];
 }

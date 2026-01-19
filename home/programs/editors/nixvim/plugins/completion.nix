@@ -144,20 +144,55 @@ in
         none-ls = {
           enable = true;
           sources.formatting = {
-            black.enable = true;
+            black = {
+              enable = true;
+              settings = ''
+                {
+                  extra_args = { "--line-length", "88" },
+                }
+              '';
+            };
             alejandra.enable = true;
             hclfmt.enable = true;
             just.enable = true;
-            prettier.enable = true;
+            prettier = {
+              enable = true;
+              settings = ''
+                {
+                  extra_args = { "--tab-width", "2", "--use-tabs", "false" },
+                }
+              '';
+            };
             # rubyfmt is broken on darwin-based systems
             rubyfmt.enable = (
               pkgs.stdenv.hostPlatform.system
               != "x86_64-darwin"
               && pkgs.stdenv.hostPlatform.system != "aarch64-darwin"
             );
-            sqlformat.enable = true;
-            stylua.enable = true;
-            yamlfmt.enable = true;
+            sqlformat = {
+              enable = true;
+              settings = ''
+                {
+                  extra_args = { "--indent_width", "2" },
+                }
+              '';
+            };
+            stylua = {
+              enable = true;
+              settings = ''
+                {
+                  extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
+                }
+              '';
+            };
+            yamlfmt = {
+              enable = true;
+              settings = ''
+                {
+                  extra_args = { "-indent", "2" },
+                }
+              '';
+            };
           };
           sources.diagnostics = {
             trivy.enable = true;
@@ -167,12 +202,70 @@ in
         lsp = {
           enable = true;
           servers = {
-            jsonls.enable = true;
+            jsonls = {
+              enable = true;
+              settings = {
+                json.format = {
+                  enable = true;
+                };
+              };
+            };
             marksman.enable = true;
-            nil_ls.enable = true;
-            nixd.enable = true;
-            yamlls.enable = true;
-            taplo.enable = true;
+            nil_ls = {
+              enable = true;
+              settings = {
+                formatting = {
+                  command = ["${pkgs.alejandra}/bin/alejandra"];
+                };
+                nix = {
+                  maxMemoryMB = 2560;
+                  flake = {
+                    autoArchive = true;
+                    autoEvalInputs = true;
+                  };
+                };
+              };
+            };
+            nixd = {
+              enable = true;
+              settings = {
+                formatting = {
+                  command = ["${pkgs.alejandra}/bin/alejandra"];
+                };
+                nixpkgs = {
+                  expr = "import <nixpkgs> { }";
+                };
+                options = {
+                  nixos = {
+                    expr = "(builtins.getFlake \"/home/peuleu/nixos-config\").nixosConfigurations.laptop.options";
+                  };
+                  home-manager = {
+                    expr = "(builtins.getFlake \"/home/peuleu/nixos-config\").homeConfigurations.\"peuleu@laptop\".options";
+                  };
+                };
+              };
+            };
+            yamlls = {
+              enable = true;
+              settings = {
+                yaml = {
+                  format = {
+                    enable = true;
+                    singleQuote = false;
+                    bracketSpacing = true;
+                  };
+                  customTags = [];
+                };
+              };
+            };
+            taplo = {
+              enable = true;
+              settings = {
+                formatting = {
+                  indent_string = "  ";
+                };
+              };
+            };
             pylsp = {
               enable = true;
               settings.plugins = {
@@ -191,7 +284,16 @@ in
             };
             lua_ls = {
               enable = true;
-              settings.telemetry.enable = false;
+              settings = {
+                telemetry.enable = false;
+                Lua.format = {
+                  enable = true;
+                  defaultConfig = {
+                    indent_style = "space";
+                    indent_size = "2";
+                  };
+                };
+              };
             };
           };
         };

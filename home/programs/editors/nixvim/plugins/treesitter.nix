@@ -6,6 +6,10 @@
         treesitter = {
           enable = true;
           folding = false;
+          settings = {
+            indent.enable = true;
+            highlight.enable = true;
+          };
           grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
             bash
             python
@@ -21,17 +25,6 @@
             xml
             yaml
           ];
-#          settings = {
-#            indent.enable = true;
-#            auto_install = true;
-#            ensure_installed = [
-#              "git_config"
-#              "git_rebase"
-#              "gitattributes"
-#              "gitcommit"
-#              "gitignore"
-#            ];
-#          };
         };
       };
     };

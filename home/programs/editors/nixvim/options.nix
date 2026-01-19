@@ -26,6 +26,7 @@
         incsearch = true;
         completeopt = "menu,menuone,noselect";
         wildmode = "longest:full,full";
+        mouse = ""; # Disable mouse
 
         swapfile = false;
         undofile = true; # Build-in persistent undo

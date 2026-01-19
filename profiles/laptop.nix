@@ -13,8 +13,12 @@
 
   # Laptop-specific services
   services.logind = {
-    lidSwitch = "suspend";
-    lidSwitchExternalPower = "lock";
+    settings = {
+      Login = {
+        HandleLidSwitch = "suspend";
+        HandleLidSwitchExternalPower = "lock";
+      };
+    };
   };
 
   # Touchpad
