@@ -1,6 +1,6 @@
-{pkgs, ...}:
+{pkgs, lib, isLinux ? true, ...}:
 {
-	home.packages = with pkgs; [
+	home.packages = lib.optionals isLinux (with pkgs; [
 		spotify
-	];
+	]);
 }

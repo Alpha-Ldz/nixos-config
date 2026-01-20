@@ -1,7 +1,7 @@
-{config, pkgs, inputs, ...}:
+{config, pkgs, inputs, lib, isLinux ? true, ...}:
 {
 	programs.kitty = {
-		enable = true;
+		enable = lib.mkIf isLinux true;
 
 		font = {
 			name = "Fira Code";

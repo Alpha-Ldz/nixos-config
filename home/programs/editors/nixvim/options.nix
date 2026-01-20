@@ -1,7 +1,8 @@
-{pkgs, inputs, ...}: {
-  programs = { 
+{pkgs, inputs, lib, isLinux ? true, ...}: {
+  programs = {
     nixvim = {
-      clipboard.providers.wl-copy.enable = true;
+      # Enable Wayland clipboard only on Linux
+      clipboard.providers.wl-copy.enable = lib.mkIf isLinux true;
       opts = {
         updatetime = 100; # faster completion
         number = true;

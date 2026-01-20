@@ -1,7 +1,7 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, isLinux ? true, ... }:
 {
   programs.firefox = {
-    enable = true;
+    enable = lib.mkIf isLinux true;
     profiles.${config.home.username} = {
       settings = {
         # Follow system theme
