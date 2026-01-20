@@ -1,7 +1,7 @@
 { pkgs, config, lib, isLinux ? true, ... }:
 {
   programs.firefox = {
-    enable = lib.mkIf isLinux true;
+    enable = true;  # Enable Firefox on all platforms
     profiles.${config.home.username} = {
       settings = {
         # Follow system theme
