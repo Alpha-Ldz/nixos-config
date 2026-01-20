@@ -68,7 +68,7 @@
     enable = true;
     onActivation = {
       autoUpdate = true;
-      cleanup = "zap";
+      cleanup = "none";  # Don't remove manually installed Homebrew packages
       upgrade = true;
     };
 

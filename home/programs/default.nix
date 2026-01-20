@@ -8,7 +8,6 @@
     ./development/kubernetes.nix
     ./development/nodejs.nix
     ./development/poetry.nix
-    ./development/mongodb.nix
     ./development/docker.nix
   ];
 }
