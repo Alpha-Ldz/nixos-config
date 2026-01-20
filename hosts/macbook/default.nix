@@ -45,6 +45,9 @@
   # Set the primary user for system defaults
   system.primaryUser = "pierre-louis";
 
+  # Fix GID mismatch for Nix build users
+  ids.gids.nixbld = 30000;
+
   # Nix settings
   nix = {
     settings = {
