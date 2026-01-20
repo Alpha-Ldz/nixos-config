@@ -1,4 +1,9 @@
-{ pkgs, inputs, lib, ... }:
+{ pkgs, inputs, lib, config, ... }:
+let
+  # Detect platform without using pkgs (which causes infinite recursion)
+  isLinux = builtins.match ".*linux.*" builtins.currentSystem != null;
+  isDarwin = builtins.match ".*darwin.*" builtins.currentSystem != null;
+in
 {
   imports = [
     # Core home-manager config
@@ -6,11 +11,11 @@
 
     # Programs (cross-platform)
     ../../home/programs
-  ] ++ lib.optionals pkgs.stdenv.isLinux [
+  ] ++ lib.optionals isLinux [
     # Linux-specific
     ../../home/desktop/hyprland
     ../../home/platform/linux.nix
-  ] ++ lib.optionals pkgs.stdenv.isDarwin [
+  ] ++ lib.optionals isDarwin [
     # macOS-specific
     ../../home/platform/macos.nix
   ];
