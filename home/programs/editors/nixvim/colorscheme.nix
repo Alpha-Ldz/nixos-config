@@ -49,7 +49,7 @@
 
             if result:match("dark") then
               vim.o.background = "dark"
-              vim.cmd.colorscheme("catppuccin-mocha")
+              vim.cmd.colorscheme("bluloco")
             else
               vim.o.background = "light"
               vim.cmd.colorscheme("bluloco-light")

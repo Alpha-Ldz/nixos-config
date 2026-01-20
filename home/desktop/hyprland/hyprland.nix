@@ -52,7 +52,7 @@
 
       input = {
         kb_layout = "us";
-        follow_mouse = 1;
+        follow_mouse = 0;  # Disable focus following mouse - use keyboard to switch windows
         touchpad.natural_scroll = "yes";
         sensitivity = 0;
       };
@@ -60,9 +60,13 @@
       general = {
         gaps_in = 10;
         gaps_out = 10;
-        border_size = 0;
-        no_border_on_floating = true;
+        border_size = 2;
+        no_border_on_floating = false;
         layout = "dwindle";
+
+        # Bluloco theme colors for borders
+        "col.active_border" = "rgba(10b0feee) rgba(ff78f8ee) 45deg";  # Blue to magenta gradient
+        "col.inactive_border" = "rgba(42444daa)";  # Gray
       };
 
       misc = {
@@ -71,6 +75,11 @@
         mouse_move_enables_dpms = true;
         enable_swallow = true;
         swallow_regex = "^(kitty)$";
+      };
+
+      cursor = {
+        no_warps = true;  # Don't move cursor to center when switching windows
+        inactive_timeout = 3;  # Hide cursor after 3 seconds of inactivity
       };
 
       decoration = {

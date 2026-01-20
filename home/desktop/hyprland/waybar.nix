@@ -13,6 +13,7 @@
         position = "left";
         width = 50;
         spacing = 4;
+        output = ["DP-2"];  # Show only on first monitor
 
         modules-left = [
           "hyprland/workspaces"
@@ -145,8 +146,12 @@
       }
 
       window#waybar {
-        background: rgba(30, 30, 46, 0.9);
-        color: #cdd6f4;
+        background: rgba(40, 44, 52, 0.9);
+        color: #ccd5e5;
+        border-radius: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 10px;
       }
 
       #custom-launcher {
