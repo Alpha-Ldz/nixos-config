@@ -7,5 +7,6 @@
     ./editors/nixvim
     ./development/kubernetes.nix
     ./development/nodejs.nix
+    ./development/poetry.nix
   ];
 }
