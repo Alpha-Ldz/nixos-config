@@ -1,9 +1,4 @@
-{ pkgs, inputs, lib, config, ... }:
-let
-  # Detect platform without using pkgs (which causes infinite recursion)
-  isLinux = builtins.match ".*linux.*" builtins.currentSystem != null;
-  isDarwin = builtins.match ".*darwin.*" builtins.currentSystem != null;
-in
+{ pkgs, inputs, lib, config, isLinux, isDarwin, ... }:
 {
   imports = [
     # Core home-manager config
@@ -22,11 +17,7 @@ in
 
   # User-specific git config
   programs.git = {
-    settings = {
-      user = {
-        name = "Alpha-Ldz";
-        email = "pllandouzi@gmail.com";
-      };
-    };
+    userName = "Alpha-Ldz";
+    userEmail = "pllandouzi@gmail.com";
   };
 }

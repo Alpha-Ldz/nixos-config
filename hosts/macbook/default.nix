@@ -42,12 +42,16 @@
     };
   };
 
+  # Set the primary user for system defaults
+  system.primaryUser = "peuleu";
+
   # Nix settings
   nix = {
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      auto-optimise-store = true;
     };
+
+    optimise.automatic = true;
 
     gc = {
       automatic = true;
@@ -75,9 +79,6 @@
       # "visual-studio-code"
     ];
   };
-
-  # Auto upgrade nix package and the daemon service
-  services.nix-daemon.enable = true;
 
   # Fonts
   fonts.packages = with pkgs; [

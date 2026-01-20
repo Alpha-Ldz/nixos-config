@@ -1,6 +1,6 @@
 { inputs, versions }:
 let
-  inherit (inputs) nixpkgs nixpkgs-unstable home-manager darwin;
+  inherit (inputs) nixpkgs nixpkgs-unstable nixpkgs-darwin home-manager home-manager-darwin darwin;
 in
 {
   # Build a NixOS host with home-manager integration
@@ -11,9 +11,11 @@ in
     extraModules ? []
   }:
   let
-    # Create specialArgs for this host
+    # Create specialArgs for this host with platform info
     specialArgs = {
       inherit inputs versions;
+      isDarwin = false;
+      isLinux = true;
     };
   in
   nixpkgs.lib.nixosSystem {
@@ -29,7 +31,7 @@ in
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = inputs // specialArgs;
+        home-manager.extraSpecialArgs = specialArgs;
 
         # Import home configs for each user
         home-manager.users = builtins.listToAttrs (
@@ -50,16 +52,16 @@ in
     extraModules ? []
   }:
   let
-    # Create specialArgs for this host
+    # Create specialArgs for this host with platform info
     specialArgs = {
       inherit inputs versions;
+      isDarwin = true;
+      isLinux = false;
     };
   in
   darwin.lib.darwinSystem {
     inherit system;
     inherit specialArgs;
-    # Disable the strict version check since we're using nixpkgs-unstable with master darwin
-    enableNixpkgsReleaseCheck = false;
 
     modules = [
       # Enable unfree packages for Darwin
@@ -68,8 +70,8 @@ in
       # Host configuration
       ../hosts/${hostname}
 
-      # Home-manager integration
-      home-manager.darwinModules.home-manager
+      # Home-manager integration (using Darwin-compatible version)
+      home-manager-darwin.darwinModules.home-manager
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
