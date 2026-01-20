@@ -52,7 +52,7 @@
       macbook = lib.mkDarwinHost {
         hostname = "macbook";
         system = "aarch64-darwin";  # Use "x86_64-darwin" for Intel Macs
-        users = [ "peuleu" ];
+        users = [ "pierre-louis" ];
       };
     };
 

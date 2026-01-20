@@ -43,7 +43,7 @@
   };
 
   # Set the primary user for system defaults
-  system.primaryUser = "peuleu";
+  system.primaryUser = "pierre-louis";
 
   # Nix settings
   nix = {
@@ -89,8 +89,8 @@
   programs.zsh.enable = true;
 
   # User configuration
-  users.users.peuleu = {
-    name = "peuleu";
-    home = "/Users/peuleu";
+  users.users.pierre-louis = {
+    name = "pierre-louis";
+    home = "/Users/pierre-louis";
   };
 }
