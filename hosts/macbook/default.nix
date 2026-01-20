@@ -78,8 +78,7 @@
     ];
 
     casks = [
-      # "firefox"
-      # "visual-studio-code"
+      "bitwarden"
     ];
   };
 

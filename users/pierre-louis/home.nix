@@ -1,4 +1,4 @@
-{ pkgs, inputs, lib, config, isLinux, isDarwin, ... }:
+{ pkgs, inputs, lib, config, ... }:
 {
   imports = [
     # Core home-manager config
@@ -6,12 +6,8 @@
 
     # Programs (cross-platform)
     ../../home/programs
-  ] ++ lib.optionals isLinux [
-    # Linux-specific
-    ../../home/desktop/hyprland
-    ../../home/platform/linux.nix
-  ] ++ lib.optionals isDarwin [
-    # macOS-specific
+
+    # macOS-specific (pierre-louis is macOS-only)
     ../../home/platform/macos.nix
   ];
 
