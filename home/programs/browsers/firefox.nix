@@ -1,9 +1,8 @@
 { pkgs, config, lib, isLinux ? true, isDarwin ? false, ... }:
 {
   programs.firefox = {
-    # On macOS, install Firefox via Homebrew for better integration
-    # On Linux, install via nixpkgs
-    enable = isLinux;
+    # Install Firefox via Nix on both Linux and macOS
+    enable = true;
     profiles.${config.home.username} = {
       settings = {
         # Follow system theme
