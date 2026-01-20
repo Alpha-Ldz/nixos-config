@@ -50,11 +50,19 @@ nixos-rebuild build --flake .#sleeper
 
 ### Switch to a configuration
 
+**NixOS:**
 ```bash
 sudo nixos-rebuild switch --flake .#laptop
 ```
 
+**macOS (nix-darwin):**
+```bash
+darwin-rebuild switch --flake .#macbook
+```
+
 ## Adding a New Machine
+
+### Adding a NixOS Machine
 
 1. **Generate hardware configuration:**
    ```bash
@@ -101,6 +109,46 @@ sudo nixos-rebuild switch --flake .#laptop
 6. **Build and test:**
    ```bash
    nixos-rebuild build --flake .#NEW-MACHINE
+   ```
+
+### Adding a macOS Machine
+
+1. **Create host directory:**
+   ```bash
+   mkdir -p hosts/NEW-MAC
+   ```
+
+2. **Create configuration file:**
+   ```bash
+   # Copy the macbook template as a starting point
+   cp hosts/macbook/default.nix hosts/NEW-MAC/default.nix
+   ```
+
+3. **Edit `hosts/NEW-MAC/default.nix`:**
+   - Adjust user settings
+   - Configure macOS system preferences
+   - Add desired Homebrew packages
+   - Customize system packages
+
+4. **Add to `flake.nix`:**
+   ```nix
+   darwinConfigurations = {
+     # ... existing configs ...
+     NEW-MAC = lib.mkDarwinHost {
+       hostname = "NEW-MAC";
+       system = "aarch64-darwin";  # or "x86_64-darwin" for Intel
+       users = [ "peuleu" ];
+     };
+   };
+   ```
+
+5. **Build and test:**
+   ```bash
+   # First-time setup
+   nix run nix-darwin -- switch --flake .#NEW-MAC
+
+   # Subsequent updates
+   darwin-rebuild switch --flake .#NEW-MAC
    ```
 
 ## Architecture
@@ -168,10 +216,45 @@ User-level configurations in `home/` are cross-platform and can be used on:
 
 ### Using on macOS
 
+There are two ways to use this configuration on macOS:
+
+#### 1. nix-darwin (System-level, Recommended)
+
+nix-darwin provides system-level configuration similar to NixOS:
+
+**First-time setup:**
+```bash
+# Install nix-darwin (run once)
+nix run nix-darwin -- switch --flake .#macbook
+
+# After first install, use:
+darwin-rebuild switch --flake .#macbook
+```
+
+**Build without switching:**
+```bash
+darwin-rebuild build --flake .#macbook
+```
+
+**What nix-darwin manages:**
+- System packages and services
+- macOS system preferences (Dock, Finder, keyboard, etc.)
+- Homebrew integration
+- User environment with home-manager
+- System-wide configuration
+
+#### 2. Standalone home-manager (User-level only)
+
+For user-level configuration only (dotfiles, programs):
 ```bash
 # Build home-manager config for macOS
 home-manager build --flake .#peuleu@macos
+
+# Switch to the configuration
+home-manager switch --flake .#peuleu@macos
 ```
+
+**Note:** If using nix-darwin, you don't need standalone home-manager as it's integrated.
 
 ## Version Management
 
@@ -211,8 +294,12 @@ Access them in configs via `versions.nixos` or `versions.homeManager`.
 
 ## Current Machines
 
+### NixOS
 - **laptop** - Development laptop with Hyprland, NVIDIA, Docker (stateVersion: 25.11)
 - **sleeper** - Gaming desktop with custom NVIDIA driver, Sunshine streaming (stateVersion: 24.05)
+
+### macOS (nix-darwin)
+- **macbook** - macOS system with nix-darwin (Apple Silicon/Intel supported)
 
 ## Tips
 

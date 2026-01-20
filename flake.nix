@@ -8,6 +8,10 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     hyprland.url = "github:hyprwm/Hyprland";
     nixvim = {
       url = "github:nix-community/nixvim/nixos-25.11";
@@ -38,7 +42,16 @@
       };
     };
 
-    # Standalone home-manager configurations (for macOS, non-NixOS Linux)
+    # macOS configurations with nix-darwin
+    darwinConfigurations = {
+      macbook = lib.mkDarwinHost {
+        hostname = "macbook";
+        system = "aarch64-darwin";  # Use "x86_64-darwin" for Intel Macs
+        users = [ "peuleu" ];
+      };
+    };
+
+    # Standalone home-manager configurations (for non-NixOS/non-Darwin systems)
     homeConfigurations = {
       "peuleu@macos" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-darwin;
