@@ -1,7 +1,8 @@
 { pkgs, ... }:
 {
-  # Python Poetry dependency management
+  # Python development tools
   home.packages = with pkgs; [
+    python313
     poetry
   ];
 }
