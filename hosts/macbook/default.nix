@@ -79,6 +79,7 @@
 
     casks = [
       "bitwarden"
+      "firefox"
     ];
   };
 
