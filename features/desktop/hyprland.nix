@@ -1,13 +1,11 @@
 { inputs, pkgs, ... }:
 {
+  imports = [
+    ./greetd.nix
+  ];
+
   # Enable Hyprland window manager
   programs.hyprland.enable = true;
-
-  # Display manager
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;
-  };
 
   # Wayland session environment
   environment.sessionVariables = {

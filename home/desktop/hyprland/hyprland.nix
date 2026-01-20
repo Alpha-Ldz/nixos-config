@@ -23,6 +23,7 @@
         "$mod, up, movefocus, u"
         "$mod, down, movefocus, d"
         "$mod, D, exec, rofi -show drun"
+        "$mod, L, exec, hyprlock"
         "$mod, M, exit"
 
         "$modS, left, movewindow, l"
