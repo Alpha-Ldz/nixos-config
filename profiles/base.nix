@@ -41,6 +41,10 @@
   # Networking
   networking.networkmanager.enable = true;
 
+  # Bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
   # Enable zsh
   programs.zsh.enable = true;
 
@@ -48,5 +52,6 @@
   environment.systemPackages = with pkgs; [
     git
     neovim
+    bluetuith
   ];
 }

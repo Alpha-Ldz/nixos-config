@@ -1,4 +1,4 @@
-{inputs, ...}:
+{inputs, pkgs, ...}:
 {
   imports = [
     inputs.nixvim.homeModules.nixvim
@@ -15,6 +15,20 @@
         vimAlias = true;
 
         luaLoader.enable = true;
+
+        extraPackages = with pkgs; [
+          ripgrep  # Required for telescope live_grep
+
+          # Python LSP and tools
+          (python3.withPackages (ps: with ps; [
+            python-lsp-server
+            pylsp-mypy
+            python-lsp-black
+            pyls-isort
+            pylsp-rope
+            python-lsp-ruff
+          ]))
+        ];
     };
   };
 }

@@ -56,6 +56,143 @@
           desc = "Format current buffer";
         };
       }
+
+      # Window management keymaps
+      # Split windows
+      {
+        mode = "n";
+        key = "<leader>sv";
+        action = "<cmd>vsplit<cr>";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Split window vertically";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>sh";
+        action = "<cmd>split<cr>";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Split window horizontally";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>sc";
+        action = "<cmd>close<cr>";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Close current window";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>so";
+        action = "<cmd>only<cr>";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Close all other windows";
+        };
+      }
+
+      # Navigate between windows
+      {
+        mode = "n";
+        key = "<leader>wh";
+        action = "<C-w>h";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Move to left window";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>wj";
+        action = "<C-w>j";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Move to bottom window";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>wk";
+        action = "<C-w>k";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Move to top window";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>wl";
+        action = "<C-w>l";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Move to right window";
+        };
+      }
+
+      # Resize windows
+      {
+        mode = "n";
+        key = "<leader>w=";
+        action = "<C-w>=";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Equalize window sizes";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>w>";
+        action = "<cmd>vertical resize +5<cr>";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Increase window width";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>w<";
+        action = "<cmd>vertical resize -5<cr>";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Decrease window width";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>w+";
+        action = "<cmd>resize +5<cr>";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Increase window height";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>w-";
+        action = "<cmd>resize -5<cr>";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Decrease window height";
+        };
+      }
     ];
   };
 }

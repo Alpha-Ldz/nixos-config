@@ -1,0 +1,12 @@
+/* Bluloco Dark theme for Waybar */
+@define-color waybar-bg rgba(40, 44, 52, 0.9);
+@define-color waybar-fg #ccd5e5;
+@define-color waybar-blue #89b4fa;
+@define-color waybar-blue-hover rgba(137, 180, 250, 0.2);
+@define-color waybar-gray #6c7086;
+@define-color waybar-hover rgba(205, 214, 244, 0.1);
+@define-color waybar-red #f38ba8;
+@define-color waybar-green #a6e3a1;
+@define-color waybar-cyan #89dceb;
+@define-color waybar-yellow #f9e2af;
+@define-color waybar-bg-alt #181825;

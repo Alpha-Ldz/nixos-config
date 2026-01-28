@@ -1,3 +1,4 @@
+{pkgs, ...}:
 {
   programs.nixvim.plugins.telescope = {
     enable = true;
@@ -56,6 +57,14 @@
         action = "git_files";
         options = {
           desc = "Git files";
+        };
+      };
+
+      # Keymaps
+      "<leader>fk" = {
+        action = "keymaps";
+        options = {
+          desc = "Search keymaps";
         };
       };
     };

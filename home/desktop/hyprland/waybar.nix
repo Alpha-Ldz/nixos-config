@@ -3,6 +3,17 @@
   pkgs,
   ...
 }: {
+  # Deploy waybar theme files
+  xdg.configFile."waybar/waybar-dark.css".source = ./waybar-dark.css;
+  xdg.configFile."waybar/waybar-light.css".source = ./waybar-light.css;
+
+  # Create initial theme symlink (default to dark theme)
+  home.activation.waybarTheme = config.lib.dag.entryAfter ["writeBoundary"] ''
+    $DRY_RUN_CMD ln -sf $VERBOSE_ARG \
+      ${config.xdg.configHome}/waybar/waybar-dark.css \
+      ${config.xdg.configHome}/waybar/current-theme.css
+  '';
+
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -137,6 +148,8 @@
     };
 
     style = ''
+      @import url("file:///home/peuleu/.config/waybar/current-theme.css");
+
       * {
         border: none;
         border-radius: 0;
@@ -146,8 +159,8 @@
       }
 
       window#waybar {
-        background: rgba(40, 44, 52, 0.9);
-        color: #ccd5e5;
+        background: @waybar-bg;
+        color: @waybar-fg;
         border-radius: 10px;
         margin-top: 10px;
         margin-bottom: 10px;
@@ -156,13 +169,13 @@
 
       #custom-launcher {
         font-size: 20px;
-        color: #89b4fa;
+        color: @waybar-blue;
         padding: 12px 0;
         margin: 8px 0;
       }
 
       #custom-launcher:hover {
-        background: rgba(137, 180, 250, 0.2);
+        background: @waybar-blue-hover;
       }
 
       #workspaces {
@@ -171,24 +184,24 @@
 
       #workspaces button {
         padding: 4px;
-        color: #6c7086;
+        color: @waybar-gray;
         border-radius: 8px;
         min-width: 30px;
       }
 
       #workspaces button.active {
-        color: #89b4fa;
-        background: rgba(137, 180, 250, 0.2);
+        color: @waybar-blue;
+        background: @waybar-blue-hover;
       }
 
       #workspaces button:hover {
-        background: rgba(205, 214, 244, 0.1);
+        background: @waybar-hover;
       }
 
       #window {
         font-size: 18px;
         padding: 8px 0;
-        color: #89b4fa;
+        color: @waybar-blue;
       }
 
       #clock {
@@ -207,31 +220,31 @@
 
       #tray > .needs-attention {
         -gtk-icon-effect: highlight;
-        color: #f38ba8;
+        color: @waybar-red;
       }
 
       #network {
         font-size: 16px;
         padding: 8px 0;
-        color: #a6e3a1;
+        color: @waybar-green;
       }
 
       #network.disconnected {
-        color: #f38ba8;
+        color: @waybar-red;
       }
 
       #bluetooth {
         font-size: 16px;
         padding: 8px 0;
-        color: #89dceb;
+        color: @waybar-cyan;
       }
 
       #bluetooth.disabled {
-        color: #6c7086;
+        color: @waybar-gray;
       }
 
       #bluetooth.connected {
-        color: #a6e3a1;
+        color: @waybar-green;
       }
 
       #battery {
@@ -239,21 +252,21 @@
       }
 
       #battery.charging {
-        color: #a6e3a1;
+        color: @waybar-green;
       }
 
       #battery.warning:not(.charging) {
-        color: #f9e2af;
+        color: @waybar-yellow;
       }
 
       #battery.critical:not(.charging) {
-        color: #f38ba8;
+        color: @waybar-red;
         animation: blink 0.5s linear infinite alternate;
       }
 
       @keyframes blink {
         to {
-          color: #181825;
+          color: @waybar-bg-alt;
         }
       }
 
@@ -263,7 +276,7 @@
       }
 
       #pulseaudio.muted {
-        color: #6c7086;
+        color: @waybar-gray;
       }
     '';
   };

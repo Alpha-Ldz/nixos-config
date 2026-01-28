@@ -25,6 +25,7 @@
         "$mod, D, exec, rofi -show drun"
         "$mod, L, exec, hyprlock"
         "$mod, M, exit"
+        "$mod, T, exec, toggle-theme"
 
         "$modS, left, movewindow, l"
         "$modS, right, movewindow, r"

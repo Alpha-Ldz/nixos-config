@@ -3,6 +3,11 @@
     nixvim = {
       # Enable Wayland clipboard only on Linux
       clipboard.providers.wl-copy.enable = lib.mkIf isLinux true;
+
+      # Set leader key to Space
+      globals.mapleader = " ";
+      globals.maplocalleader = " ";
+
       opts = {
         updatetime = 100; # faster completion
         number = true;
@@ -10,6 +15,7 @@
 
         autoindent = true;
         autowrite = true;
+        autoread = true; # Auto reload files when changed externally
         confirm = true;
         clipboard = "unnamedplus";
         cursorline = true;

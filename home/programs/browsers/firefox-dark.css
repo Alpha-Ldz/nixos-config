@@ -1,0 +1,15 @@
+/* Bluloco Dark Theme for Firefox */
+:root {
+  --bluloco-bg: #282c34 !important;
+  --bluloco-fg: #cdd3e0 !important;
+  --bluloco-blue: #10b0fe !important;
+  --bluloco-yellow: #ffcc00 !important;
+  --bluloco-red: #fc2e51 !important;
+  --bluloco-green: #3fc56a !important;
+  --bluloco-magenta: #ff78f8 !important;
+  --bluloco-cyan: #5fb9bc !important;
+  --bluloco-gray: #42444d !important;
+  --bluloco-gray-light: #8f9aae !important;
+  --bluloco-orange: #ff9369 !important;
+  --bluloco-hover: #3a3f4b !important;
+}

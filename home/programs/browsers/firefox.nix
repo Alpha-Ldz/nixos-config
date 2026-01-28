@@ -1,5 +1,19 @@
 { pkgs, config, lib, isLinux ? true, isDarwin ? false, ... }:
 {
+  # Deploy Firefox theme CSS files to profile chrome directory
+  home.file.".mozilla/firefox/${config.home.username}/chrome/firefox-dark.css".source = ./firefox-dark.css;
+  home.file.".mozilla/firefox/${config.home.username}/chrome/firefox-light.css".source = ./firefox-light.css;
+
+  # Create initial theme symlink (default to dark theme)
+  home.activation.firefoxTheme = config.lib.dag.entryAfter ["writeBoundary"] ''
+    FIREFOX_CHROME_DIR="${config.home.homeDirectory}/.mozilla/firefox/${config.home.username}/chrome"
+    if [ -d "$FIREFOX_CHROME_DIR" ]; then
+      $DRY_RUN_CMD ln -sf $VERBOSE_ARG \
+        "$FIREFOX_CHROME_DIR/firefox-dark.css" \
+        "$FIREFOX_CHROME_DIR/firefox-current-theme.css"
+    fi
+  '';
+
   programs.firefox = {
     # Install Firefox via Nix on both Linux and macOS
     enable = true;
@@ -10,58 +24,27 @@
 
         # Follow system theme
         "layout.css.prefers-color-scheme.content-override" = 2;  # 2 = follow system
-        "ui.systemUsesDarkTheme" = 1;  # Will be overridden by system
 
-        # Enable dark mode for websites that support it
+        # Enable system theme detection for toolbar and content
         "browser.theme.toolbar-theme" = 2;  # 0 = light, 1 = dark, 2 = system
         "browser.theme.content-theme" = 2;
 
         # Privacy-respecting dark mode detection
         "privacy.resistFingerprinting" = false;
+
+        # Session restore settings for seamless theme switching
+        "browser.startup.page" = 3;  # Restore previous session
+        "browser.sessionstore.resume_from_crash" = true;
+        "browser.sessionstore.max_tabs_undo" = 25;
+        "browser.sessionstore.max_windows_undo" = 3;
       };
 
       # Bluloco theme (Dark & Light) via userChrome.css
       userChrome = ''
-        /* Bluloco Theme for Firefox - Auto-switching Dark/Light */
-
-        /* Default: Bluloco Dark Color Palette */
-        @media (prefers-color-scheme: dark) {
-          :root {
-            --bluloco-bg: #282c34 !important;
-            --bluloco-fg: #cdd3e0 !important;
-            --bluloco-blue: #10b0fe !important;
-            --bluloco-yellow: #ffcc00 !important;
-            --bluloco-red: #fc2e51 !important;
-            --bluloco-green: #3fc56a !important;
-            --bluloco-magenta: #ff78f8 !important;
-            --bluloco-cyan: #5fb9bc !important;
-            --bluloco-gray: #42444d !important;
-            --bluloco-gray-light: #8f9aae !important;
-            --bluloco-orange: #ff9369 !important;
-            --bluloco-hover: #3a3f4b !important;
-          }
-        }
-
-        /* Bluloco Light Color Palette */
-        @media (prefers-color-scheme: light) {
-          :root {
-            --bluloco-bg: #f7f7f7 !important;
-            --bluloco-fg: #38383a !important;
-            --bluloco-blue: #0099e0 !important;
-            --bluloco-yellow: #c5a231 !important;
-            --bluloco-red: #d52652 !important;
-            --bluloco-green: #239749 !important;
-            --bluloco-magenta: #ce32c0 !important;
-            --bluloco-cyan: #26608c !important;
-            --bluloco-gray: #d3d3d3 !important;
-            --bluloco-gray-light: #b9bac1 !important;
-            --bluloco-orange: #df621b !important;
-            --bluloco-hover: #e8e8e8 !important;
-          }
-        }
+        /* Bluloco Theme for Firefox - Dynamic theme switching */
+        @import url("firefox-current-theme.css");
 
         :root {
-
           /* Apply bluloco colors to Firefox UI */
           --toolbar-bgcolor: var(--bluloco-bg) !important;
           --toolbar-color: var(--bluloco-fg) !important;

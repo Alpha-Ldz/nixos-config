@@ -9,20 +9,38 @@ in
           enable = true;
           settings = {
             autoEnableSources = true;
+            experimental = {
+              ghost_text = true;
+            };
             performance = {
-              debounce = 150;
+              debounce = 60;
+              throttle = 30;
+              fetching_timeout = 500;
+            };
+            completion = {
+              autocomplete = [
+                "require('cmp.types').cmp.TriggerEvent.TextChanged"
+              ];
+              keyword_length = 1;
             };
             sources = [
-              {name = "path";}
               {
                 name = "nvim_lsp";
-                keywordLength = 1;
+                priority = 1000;
+              }
+              {
+                name = "luasnip";
+                priority = 750;
+              }
+              {
+                name = "path";
+                priority = 500;
               }
               {
                 name = "buffer";
-                keywordLength = 3;
+                priority = 250;
+                keyword_length = 3;
               }
-              # {name = "supermaven";}
             ];
 
             snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
@@ -140,6 +158,7 @@ in
         cmp-buffer.enable = true;
         cmp-path.enable = true;
         cmp-treesitter.enable = true;
+        cmp_luasnip.enable = true;
         dap.enable = true;
         none-ls = {
           enable = true;
@@ -201,6 +220,9 @@ in
         };
         lsp = {
           enable = true;
+          capabilities = ''
+            capabilities = require('cmp_nvim_lsp').default_capabilities()
+          '';
           servers = {
             jsonls = {
               enable = true;
@@ -268,18 +290,56 @@ in
             };
             pylsp = {
               enable = true;
-              settings.plugins = {
-                black.enabled = true;
-                flake8.enabled = true;
-                isort.enabled = true;
-                jedi.enabled = true;
-                mccabe.enabled = true;
-                pycodestyle.enabled = true;
-                pydocstyle.enabled = true;
-                pyflakes.enabled = true;
-                pylint.enabled = true;
-                rope.enabled = true;
-                yapf.enabled = true;
+              settings = {
+                pylsp = {
+                  plugins = {
+                    # Formatters
+                    black = {
+                      enabled = true;
+                      line_length = 88;
+                    };
+                    isort.enabled = true;
+                    yapf.enabled = false;
+
+                    # Linters
+                    ruff.enabled = true;
+                    flake8.enabled = false; # Disable flake8 when using ruff
+                    pycodestyle.enabled = false;
+                    pyflakes.enabled = false;
+                    pylint.enabled = false;
+                    mccabe.enabled = false;
+
+                    # Code intelligence - MOST IMPORTANT
+                    jedi = {
+                      enabled = true;
+                      extra_paths = [];
+                    };
+                    jedi_completion = {
+                      enabled = true;
+                      include_params = true;
+                      include_class_objects = true;
+                      include_function_objects = true;
+                      fuzzy = true;
+                    };
+                    jedi_hover = {
+                      enabled = true;
+                    };
+                    jedi_references = {
+                      enabled = true;
+                    };
+                    jedi_signature_help = {
+                      enabled = true;
+                    };
+                    jedi_symbols = {
+                      enabled = true;
+                      all_scopes = true;
+                    };
+                    rope_completion = {
+                      enabled = true;
+                      eager = false;
+                    };
+                  };
+                };
               };
             };
             lua_ls = {
