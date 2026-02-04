@@ -38,6 +38,9 @@
         swapfile = false;
         undofile = true; # Build-in persistent undo
         undolevels = 10000;
+
+        # Enable true color support
+        termguicolors = true;
       };
     };
   };

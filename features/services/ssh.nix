@@ -7,6 +7,11 @@
       PermitRootLogin = "no";
       PasswordAuthentication = true;
     };
+
+    # Accept environment variables for terminal colors
+    extraConfig = ''
+      AcceptEnv LANG LC_* TERM COLORTERM
+    '';
   };
 
   # Open SSH port in firewall

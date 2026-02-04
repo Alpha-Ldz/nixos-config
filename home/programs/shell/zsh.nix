@@ -31,5 +31,19 @@
     history = {
       size = 10000;
     };
+
+    # Enable true color support
+    initExtra = ''
+      # Set TERM for true color support
+      export TERM=xterm-256color
+
+      # Enable true color in terminal
+      if [[ -n "$TMUX" ]]; then
+        export TERM=screen-256color
+      fi
+
+      # Force true color support
+      export COLORTERM=truecolor
+    '';
   };
 }
