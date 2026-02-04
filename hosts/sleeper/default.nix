@@ -16,6 +16,7 @@
     ../../features/services/docker.nix
     ../../features/services/sunshine.nix
     ../../features/services/ollama.nix
+    ../../features/services/ssh.nix
 
     # Hardware and users
     ./hardware-configuration.nix
