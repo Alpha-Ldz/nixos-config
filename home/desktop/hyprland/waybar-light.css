@@ -1,12 +1,12 @@
 /* Bluloco Light theme for Waybar */
-@define-color waybar-bg rgba(247, 247, 247, 0.9);
-@define-color waybar-fg #38383a;
-@define-color waybar-blue #0099e0;
-@define-color waybar-blue-hover rgba(0, 153, 224, 0.2);
-@define-color waybar-gray #b9bac1;
-@define-color waybar-hover rgba(56, 56, 58, 0.1);
-@define-color waybar-red #d52652;
-@define-color waybar-green #239749;
-@define-color waybar-cyan #26608c;
-@define-color waybar-yellow #c5a231;
-@define-color waybar-bg-alt #e8e8e8;
+@define-color waybar-bg rgba(249, 249, 249, 0.9);
+@define-color waybar-fg #373a41;
+@define-color waybar-blue #275fe4;
+@define-color waybar-blue-hover rgba(39, 95, 228, 0.2);
+@define-color waybar-gray #676a77;
+@define-color waybar-hover rgba(55, 58, 65, 0.1);
+@define-color waybar-red #d52753;
+@define-color waybar-green #23974a;
+@define-color waybar-cyan #27618d;
+@define-color waybar-yellow #df631c;
+@define-color waybar-bg-alt #babbc2;
