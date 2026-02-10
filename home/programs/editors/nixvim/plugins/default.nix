@@ -13,5 +13,6 @@
     ./poetry.nix
     ./lsp-keymaps.nix
     ./snippets.nix
+    ./markdown.nix
   ];
 }
