@@ -7,5 +7,9 @@
     kubernetes-helm
     k9s
     claude-code
+    android-tools
   ];
+
+  # Enable adb with proper udev rules
+  programs.adb.enable = true;
 }
