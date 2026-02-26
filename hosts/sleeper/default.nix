@@ -15,7 +15,6 @@
     ../../features/desktop/hyprland.nix
     ../../features/hardware/nvidia.nix
     ../../features/services/docker.nix
-    ../../features/services/sunshine.nix
     ../../features/services/ollama.nix
     ../../features/services/ssh.nix
 
@@ -37,7 +36,7 @@
   time.timeZone = "Europe/Paris";
 
   # Enable iSCSI support for Longhorn (needed for both desktop and k3s-server modes)
-  boot.kernelModules = [ "iscsi_tcp" ];
+  boot.kernelModules = ["iscsi_tcp"];
   services.openiscsi = {
     enable = true;
     name = "iqn.2016-04.com.open-iscsi:sleeper";
