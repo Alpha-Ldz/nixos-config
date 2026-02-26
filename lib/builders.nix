@@ -52,9 +52,12 @@ in
     extraModules ? []
   }:
   let
+    # Use nixvim-darwin for darwin builds (follows nixpkgs-darwin)
+    darwinInputs = inputs // { nixvim = inputs.nixvim-darwin; };
     # Create specialArgs for this host with platform info
     specialArgs = {
-      inherit inputs versions;
+      inputs = darwinInputs;
+      inherit versions;
       isDarwin = true;
       isLinux = false;
     };

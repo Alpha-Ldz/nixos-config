@@ -34,6 +34,7 @@
         completeopt = "menu,menuone,noselect";
         wildmode = "longest:full,full";
         mouse = ""; # Disable mouse
+        scrolloff = 12; # Keep 12 lines visible above/below cursor
 
         swapfile = false;
         undofile = true; # Build-in persistent undo

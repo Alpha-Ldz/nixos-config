@@ -1,7 +1,7 @@
 let
   selectOpts = "{behavior = cmp.SelectBehavior.Select}";
 in
-{pkgs, ...}: {
+{pkgs, isDarwin ? false, ...}: {
   programs = {
     nixvim = {
       plugins = {
@@ -257,7 +257,11 @@ in
                 nixpkgs = {
                   expr = "import <nixpkgs> { }";
                 };
-                options = {
+                options = if isDarwin then {
+                  darwin = {
+                    expr = "(builtins.getFlake \"/Users/pierre-louis/.config/nixos-config\").darwinConfigurations.macbook.options";
+                  };
+                } else {
                   nixos = {
                     expr = "(builtins.getFlake \"/home/peuleu/nixos-config\").nixosConfigurations.laptop.options";
                   };

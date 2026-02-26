@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  isDarwin ? false,
   ...
 } : {
   programs.zsh = {
@@ -8,6 +9,11 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+
+    # On macOS, ensure nix-managed binaries take precedence over Homebrew
+    initExtra = if isDarwin then ''
+      export PATH="/etc/profiles/per-user/$USER/bin:$HOME/.nix-profile/bin:$PATH"
+    '' else "";
 
     zplug = {
       enable = true;

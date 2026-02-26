@@ -44,6 +44,46 @@
       }
       {
         mode = "n";
+        key = "<leader>nn";
+        action.__raw = ''
+          function()
+            local neotree_winid = nil
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+              local buf = vim.api.nvim_win_get_buf(win)
+              if vim.api.nvim_buf_get_option(buf, 'filetype') == 'neo-tree' then
+                neotree_winid = win
+                break
+              end
+            end
+            local current_win = vim.api.nvim_get_current_win()
+            if neotree_winid == nil then
+              vim.cmd('Neotree filesystem left')
+            elseif neotree_winid ~= current_win then
+              vim.api.nvim_set_current_win(neotree_winid)
+            else
+              vim.cmd('Neotree close')
+            end
+          end
+        '';
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Toggle Neo-tree";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>nf";
+        action = "<cmd>Neotree filesystem reveal left<cr>";
+        options = {
+          noremap = true;
+          silent = true;
+          desc = "Reveal current file";
+        };
+      }
+
+      {
+        mode = "n";
         key = "<leader>f";
         action.__raw = ''
           function()

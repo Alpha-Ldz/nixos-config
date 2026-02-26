@@ -49,6 +49,10 @@
           __unkeyed-1 = "<leader>r";
           group = "Rename";
         }
+        {
+          __unkeyed-1 = "<leader>n";
+          group = "Neo-tree";
+        }
       ];
     };
   };

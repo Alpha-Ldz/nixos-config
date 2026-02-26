@@ -40,40 +40,54 @@
           end,
         })
 
-        -- Function to detect system dark mode preference using darkman
+        local function apply_custom_highlights()
+          vim.api.nvim_set_hl(0, "Normal",      { bg = "none" })
+          vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+          vim.api.nvim_set_hl(0, "NormalNC",    { bg = "none" })
+          vim.api.nvim_set_hl(0, "SignColumn",  { bg = "none" })
+          vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
+          vim.api.nvim_set_hl(0, "RainbowRed",    { fg = "#E06C75" })
+          vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
+          vim.api.nvim_set_hl(0, "RainbowBlue",   { fg = "#61AFEF" })
+          vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
+          vim.api.nvim_set_hl(0, "RainbowGreen",  { fg = "#98C379" })
+          vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
+          vim.api.nvim_set_hl(0, "RainbowCyan",   { fg = "#56B6C2" })
+        end
+
+        -- Use vim.schedule to apply AFTER all colorscheme autocmds (including ibl) finish
+        vim.api.nvim_create_autocmd("ColorScheme", {
+          pattern = "*",
+          callback = function() vim.schedule(apply_custom_highlights) end,
+        })
+
+        -- Cache current theme to avoid reloading colorscheme on every FocusGained
+        local current_theme = nil
         local function detect_system_theme()
           local handle = io.popen("darkman get 2>/dev/null")
+          local new_theme = "dark"
           if handle then
             local result = handle:read("*a")
             handle:close()
-
-            if result:match("dark") then
-              vim.o.background = "dark"
-              vim.cmd.colorscheme("bluloco")
-            else
-              vim.o.background = "light"
-              vim.cmd.colorscheme("bluloco-light")
-            end
+            if not result:match("dark") then new_theme = "light" end
+          end
+          if new_theme == current_theme then return end
+          current_theme = new_theme
+          if new_theme == "dark" then
+            vim.o.background = "dark"
+            vim.cmd.colorscheme("bluloco")
+          else
+            vim.o.background = "light"
+            vim.cmd.colorscheme("bluloco-light")
           end
         end
 
-        -- Detect theme on startup
         detect_system_theme()
 
-        -- Auto-detect theme when focus is gained (optional)
         vim.api.nvim_create_autocmd("FocusGained", {
           pattern = "*",
-          callback = function()
-            detect_system_theme()
-          end,
+          callback = detect_system_theme,
         })
-
-        -- Enable transparency
-        vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-        vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-        vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-        vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
-        vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
       '';
     };
   };

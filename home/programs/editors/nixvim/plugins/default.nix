@@ -14,5 +14,6 @@
     ./lsp-keymaps.nix
     ./snippets.nix
     ./markdown.nix
+    ./colors.nix
   ];
 }
