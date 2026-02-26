@@ -2,6 +2,19 @@
 
 Profile-oriented NixOS configuration for easy management of multiple machines.
 
+## 🚀 K3S GPU Worker Node Setup
+
+**sleeper** is configured to join an existing K3S cluster as a GPU worker node.
+
+**Quick links:**
+- 📋 **[SETUP_CHECKLIST.md](./SETUP_CHECKLIST.md)** - Step-by-step checklist
+- 📖 **[K3S_JOIN_CLUSTER.md](./K3S_JOIN_CLUSTER.md)** - Detailed guide
+- ⚡ **[QUICK_START.md](./QUICK_START.md)** - Quick start guide
+
+**Two boot modes:**
+- **Desktop** - Hyprland GUI with Ollama systemd service
+- **K3S Agent** - Headless worker node with GPU 100% dedicated to K3S
+
 ## Structure
 
 ```

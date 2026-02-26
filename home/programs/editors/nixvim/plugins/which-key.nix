@@ -8,6 +8,10 @@
         separator = "➜";
         group = "+";
       };
+      win = {
+        border = "rounded";
+        padding = [ 1 2 ];
+      };
       spec = [
         {
           __unkeyed-1 = "<leader>f";

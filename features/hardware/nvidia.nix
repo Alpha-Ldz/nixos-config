@@ -13,6 +13,9 @@
     package = lib.mkDefault config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  # Enable nvidia-container-toolkit for Docker/Containerd
+  hardware.nvidia-container-toolkit.enable = true;
+
   # NVIDIA environment variables
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "nvidia";

@@ -53,5 +53,6 @@
     git
     neovim
     bluetuith
+    gnirehtet
   ];
 }

@@ -78,6 +78,26 @@
           "^output/"
           "^data/"
           "%.ipynb"
+          # Swap and backup files
+          "%.swp$"
+          "%.swo$"
+          "%.swn$"
+          "~$"
+          "%.bak$"
+          # Lock files
+          "%.lock$"
+          "package%-lock%.json$"
+          "yarn%.lock$"
+          "Cargo%.lock$"
+          # Build artifacts
+          "^node_modules/"
+          "^target/"
+          "^build/"
+          "^dist/"
+          # Cache directories
+          "^%.cache/"
+          "^%.pytest_cache/"
+          "^%.ruff_cache/"
         ];
         set_env.COLORTERM = "truecolor";
       };

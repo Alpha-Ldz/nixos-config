@@ -208,7 +208,7 @@ in
               enable = true;
               settings = ''
                 {
-                  extra_args = { "-indent", "2" },
+                  extra_args = { "-formatter", "indent=2" },
                 }
               '';
             };
