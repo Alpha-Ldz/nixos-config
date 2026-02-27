@@ -20,4 +20,9 @@
     user.name = "Alpha-Ldz";
     user.email = "pllandouzi@gmail.com";
   };
+
+  # Kubernetes configuration
+  home.sessionVariables = {
+    KUBECONFIG = "$HOME/.kube/config";
+  };
 }
