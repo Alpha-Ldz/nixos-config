@@ -7,10 +7,12 @@
     modesetting.enable = true;
     powerManagement.enable = false;
     powerManagement.finegrained = false;
-    open = false;
+    open = true;  # Enable open source driver for RTX 5090
     nvidiaSettings = true;
-    # Default package (can be overridden in host config)
-    package = lib.mkDefault config.boot.kernelPackages.nvidiaPackages.stable;
+    # Use stable open driver for RTX 5090
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # Enable persistence daemon for NVML/compute access (needed for Ollama GPU detection)
+    nvidiaPersistenced = true;
   };
 
   # Enable nvidia-container-toolkit for Docker/Containerd
@@ -27,4 +29,6 @@
     XCURSOR_SIZE = "24";
     _JAVA_AWT_WM_NONREPARENTING = "1";
   };
+
+  # nvidia-persistenced already handles GPU initialization
 }

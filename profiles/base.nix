@@ -35,7 +35,7 @@
   # Keyboard layout
   services.xserver.xkb = {
     layout = "us";
-    variant = "";
+    variant = "intl";
   };
 
   # Networking

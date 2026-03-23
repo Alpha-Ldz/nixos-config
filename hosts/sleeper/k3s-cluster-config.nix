@@ -2,7 +2,7 @@
 #
 # This file contains the configuration for joining an existing K3S cluster
 # Edit the values below to match your cluster setup
-{...}: {
+{lib, ...}: {
   services.k3s-cluster = {
     # URL of your K3S server/master node
     # Replace with your actual server IP or hostname

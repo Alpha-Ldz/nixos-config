@@ -54,6 +54,7 @@
 
       input = {
         kb_layout = "us";
+        kb_variant = "intl";
         follow_mouse = 0;  # Disable focus following mouse - use keyboard to switch windows
         touchpad.natural_scroll = "yes";
         sensitivity = 0;

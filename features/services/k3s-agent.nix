@@ -1,5 +1,9 @@
-{ config, pkgs, lib, ... }:
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   # k3s Agent Mode - Join an existing K3S cluster as a worker node
   #
   # IMPORTANT: You must configure the server URL and token before using this.
@@ -12,7 +16,7 @@
       serverUrl = lib.mkOption {
         type = lib.types.str;
         description = "URL of the K3S server to join (e.g., https://192.168.1.100:6443)";
-        example = "https://192.168.1.100:6443";
+        example = "https://192.168.1.17:6443";
       };
 
       tokenFile = lib.mkOption {
@@ -52,7 +56,7 @@
         10250 # kubelet
       ];
       allowedUDPPorts = [
-        8472  # flannel VXLAN
+        8472 # flannel VXLAN
       ];
     };
 
@@ -61,7 +65,7 @@
       k3s
       kubectl
       kubernetes-helm
-      k9s  # Terminal UI for Kubernetes
+      k9s # Terminal UI for Kubernetes
     ];
 
     # Configure kubeconfig for root and users
@@ -72,11 +76,40 @@
 
     # Ensure k3s has access to GPU
     systemd.services.k3s = {
-      path = [ config.hardware.nvidia.package ];
+      path = [config.hardware.nvidia.package];
       environment = {
         NVIDIA_VISIBLE_DEVICES = "all";
         NVIDIA_DRIVER_CAPABILITIES = "compute,utility";
       };
+    };
+
+    # Fix MTU for cni0 interface (required for pod-to-pod communication)
+    # cni0 is created by k3s/flannel, so we must wait for it to exist
+    systemd.services.k3s-cni0-mtu = {
+      description = "Set MTU for cni0 interface";
+      after = ["k3s.service"];
+      wants = ["k3s.service"];
+      wantedBy = ["multi-user.target"];
+
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+
+      script = ''
+        # Wait for cni0 to be created by k3s (max 60 seconds)
+        for i in {1..60}; do
+          if ${pkgs.iproute2}/bin/ip link show cni0 &>/dev/null; then
+            echo "cni0 interface found, setting MTU to 1450"
+            ${pkgs.iproute2}/bin/ip link set cni0 mtu 1450
+            exit 0
+          fi
+          echo "Waiting for cni0 interface... ($i/60)"
+          sleep 1
+        done
+        echo "WARNING: cni0 interface not found after 60 seconds"
+        exit 1
+      '';
     };
 
     # Warn user if token file doesn't exist

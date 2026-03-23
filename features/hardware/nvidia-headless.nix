@@ -14,12 +14,12 @@
     modesetting.enable = true;
     powerManagement.enable = false;
     powerManagement.finegrained = false;
-    open = false;
+    open = true;  # Enable open source driver for RTX 5090
 
     # We don't need nvidia-settings on headless server
     nvidiaSettings = false;
 
-    # Use stable drivers
+    # Use stable open driver for RTX 5090 compute workloads
     package = config.boot.kernelPackages.nvidiaPackages.stable;
 
     # Enable persistence daemon for compute workloads
@@ -43,15 +43,5 @@
     cudaPackages.cudatoolkit  # CUDA toolkit
   ];
 
-  # Ensure GPU is initialized at boot
-  systemd.services.nvidia-smi-init = {
-    description = "Initialize NVIDIA GPU";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "systemd-modules-load.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${config.hardware.nvidia.package}/bin/nvidia-smi";
-      RemainAfterExit = true;
-    };
-  };
+  # nvidia-persistenced already handles GPU initialization
 }

@@ -1,46 +1,32 @@
-{ config, pkgs, lib, ... }:
 {
-  # Ollama AI service with GPU support
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
+let
+  # Use unstable nixpkgs for latest ollama version (0.18.0 vs 0.12.11 in stable)
+  pkgs-unstable = import inputs.nixpkgs-unstable {
+    inherit (pkgs) system;
+    config.allowUnfree = true;
+  };
+in
+{
+  # Ollama AI service - server mode (accessible from network)
   services.ollama = {
     enable = true;
-    acceleration = "cuda";  # Use NVIDIA CUDA for GPU acceleration
 
-    # Make Ollama accessible from other machines (useful for k3s pods)
+    # Use latest ollama from unstable for newer model support
+    package = pkgs-unstable.ollama;
+
+    # Listen on all interfaces so K3s pods can access it
     host = "0.0.0.0";
     port = 11434;
 
-    # Use all available GPUs
-    environmentVariables = {
-      NVIDIA_VISIBLE_DEVICES = "all";
-      NVIDIA_DRIVER_CAPABILITIES = "compute,utility";
-      OLLAMA_NUM_GPU = "999";  # Use all available GPUs
-      OLLAMA_MAX_LOADED_MODELS = "4";  # Number of models to keep in memory
-    };
-
-    # Models will be stored in /var/lib/ollama
-    # You can preload models here if needed
+    # GPU acceleration (CUDA for NVIDIA)
+    acceleration = "cuda";
   };
 
-  # Open firewall for Ollama
-  networking.firewall.allowedTCPPorts = [ 11434 ];
-
-  # Ensure Ollama service has GPU access
-  systemd.services.ollama = {
-    path = [ config.hardware.nvidia.package ];
-    serviceConfig = {
-      # Run with high priority for better GPU performance
-      Nice = -10;
-      # Ensure GPU is available before starting
-      Requires = [ "nvidia-persistenced.service" ];
-      After = [ "nvidia-persistenced.service" ];
-    };
-  };
-
-  # Enable NVIDIA persistence daemon for better GPU performance
-  hardware.nvidia.nvidiaPersistenced = true;
-
-  # Install Ollama CLI
-  environment.systemPackages = with pkgs; [
-    unstable.ollama
-  ];
+  networking.firewall.allowedTCPPorts = [11434];
 }
