@@ -9,5 +9,8 @@
     ./development/nodejs.nix
     ./development/poetry.nix
     ./development/docker.nix
+    ./development/uv.nix
+    ./development/github.nix
+    ./development/cuda.nix
   ];
 }

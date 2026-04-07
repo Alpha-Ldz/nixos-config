@@ -15,5 +15,6 @@
     ./snippets.nix
     ./markdown.nix
     ./colors.nix
+    ./magma.nix
   ];
 }

@@ -24,6 +24,11 @@
       listen_on = "unix:/tmp/kitty";
     };
 
+    keybindings = {
+      "ctrl+c" = "copy_or_interrupt";
+      "ctrl+v" = "paste_from_clipboard";
+    };
+
     # Include dynamic theme file
     extraConfig = ''
       include ~/.config/kitty/current-theme.conf

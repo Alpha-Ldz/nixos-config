@@ -17,8 +17,8 @@ in
   services.ollama = {
     enable = true;
 
-    # Use latest ollama from unstable for newer model support
-    package = pkgs-unstable.ollama;
+    # Use latest ollama from unstable with CUDA support
+    package = pkgs-unstable.ollama-cuda;
 
     # Listen on all interfaces so K3s pods can access it
     host = "0.0.0.0";

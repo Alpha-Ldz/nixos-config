@@ -18,10 +18,8 @@
     ../../features/services/docker.nix
     ../../features/services/ollama-server.nix  # Ollama natif avec GPU (même config en desktop et k3s-server)
     ../../features/services/ssh.nix
-
-    # K3S Agent - join cluster while in desktop mode for debugging
-    ../../features/services/k3s-agent.nix
-    ./k3s-cluster-config.nix
+    ../../features/services/thermal-monitor.nix
+    ../../features/services/vnc.nix
 
     # Hardware and users
     ./hardware-configuration.nix
@@ -69,6 +67,9 @@
     name = "iqn.2016-04.com.open-iscsi:sleeper";
   };
 
+  # Thermal and power monitoring with notifications (desktop mode)
+  services.thermal-monitor.enable = true;
+
   # Create symlinks for Longhorn to find iSCSI tools (NixOS-specific)
   system.activationScripts.longhornIscsiLinks = ''
     mkdir -p /usr/bin /sbin
@@ -95,6 +96,7 @@
         ../../features/services/k3s-agent.nix
         ../../features/services/ssh.nix
         ../../features/services/ollama-server.nix  # Ollama natif avec GPU
+        ../../features/services/thermal-monitor.nix
 
         # K3S cluster configuration (server URL and token)
         ./k3s-cluster-config.nix
@@ -147,6 +149,9 @@
         ln -sf /run/current-system/sw/bin/iscsiadm /usr/bin/iscsiadm
         ln -sf /run/current-system/sw/bin/iscsiadm /sbin/iscsiadm
       '';
+
+      # Thermal and power monitoring (headless mode - logs only, no notifications)
+      services.thermal-monitor.enable = true;
 
       # Machine settings (must be redefined)
       networking.hostName = "sleeper";

@@ -4,12 +4,12 @@
   home.file.".mozilla/firefox/${config.home.username}/chrome/firefox-dark.css".source = ./firefox-dark.css;
   home.file.".mozilla/firefox/${config.home.username}/chrome/firefox-light.css".source = ./firefox-light.css;
 
-  # Create initial theme symlink (default to dark theme)
+  # Create initial theme symlink (default to light theme)
   home.activation.firefoxTheme = config.lib.dag.entryAfter ["writeBoundary"] ''
     FIREFOX_CHROME_DIR="${config.home.homeDirectory}/.mozilla/firefox/${config.home.username}/chrome"
     if [ -d "$FIREFOX_CHROME_DIR" ]; then
       $DRY_RUN_CMD ln -sf $VERBOSE_ARG \
-        "$FIREFOX_CHROME_DIR/firefox-dark.css" \
+        "$FIREFOX_CHROME_DIR/firefox-light.css" \
         "$FIREFOX_CHROME_DIR/firefox-current-theme.css"
     fi
   '';
@@ -22,12 +22,15 @@
         # Enable userChrome.css customization
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 
-        # Follow system theme
-        "layout.css.prefers-color-scheme.content-override" = 2;  # 2 = follow system
+        # Force light theme for Firefox internal UI
+        "extensions.activeThemeID" = "firefox-compact-light@mozilla.org";
 
-        # Enable system theme detection for toolbar and content
-        "browser.theme.toolbar-theme" = 2;  # 0 = light, 1 = dark, 2 = system
-        "browser.theme.content-theme" = 2;
+        # Force light theme for web content (prefers-color-scheme CSS media query)
+        "layout.css.prefers-color-scheme.content-override" = 1;  # 0 = dark, 1 = light, 2 = system
+
+        # Force light theme for toolbar and content areas
+        "browser.theme.toolbar-theme" = 0;  # 0 = light, 1 = dark, 2 = system
+        "browser.theme.content-theme" = 0;
 
         # Privacy-respecting dark mode detection
         "privacy.resistFingerprinting" = false;
