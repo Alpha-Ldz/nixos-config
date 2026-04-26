@@ -29,6 +29,10 @@ in
                 priority = 1000;
               }
               {
+                name = "vim-dadbod-completion";
+                priority = 900;
+              }
+              {
                 name = "luasnip";
                 priority = 750;
               }
@@ -54,6 +58,7 @@ in
                 function(entry, item)
                   local menu_icon = {
                     nvim_lsp = '[LSP]',
+                    ['vim-dadbod-completion'] = '[DB]',
                     luasnip = '[SNIP]',
                     buffer = '[BUF]',
                     path = '[PATH]',

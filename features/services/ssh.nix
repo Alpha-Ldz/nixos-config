@@ -6,6 +6,11 @@
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = true;
+      # Forward terminal color variables from client
+      AcceptEnv = "COLORTERM TERM_PROGRAM";
+      # Keep connections alive
+      ClientAliveInterval = 60;
+      ClientAliveCountMax = 3;
     };
 
     # Accept environment variables for terminal colors

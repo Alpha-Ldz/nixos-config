@@ -16,5 +16,6 @@
     ./markdown.nix
     ./colors.nix
     ./magma.nix
+    ./dadbod.nix
   ];
 }

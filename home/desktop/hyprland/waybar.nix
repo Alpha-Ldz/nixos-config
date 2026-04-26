@@ -24,7 +24,7 @@
         position = "left";
         width = 50;
         spacing = 4;
-        output = ["DP-2"];  # Show only on first monitor
+        output = ["eDP-1" "DP-2"];
 
         modules-left = [
           "hyprland/workspaces"

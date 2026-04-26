@@ -42,8 +42,32 @@
             window = {
               width = 30;
               mappings = {
-                "<cr>" = "open";
-                "o" = "open";
+                "<cr>" = {
+                  __raw = ''
+                    function(state)
+                      local node = state.tree:get_node()
+                      if node.type == "file" then
+                        require("neo-tree.sources.filesystem.commands").open(state)
+                        require("neo-tree.command").execute({ action = "close" })
+                      else
+                        require("neo-tree.sources.filesystem.commands").toggle_node(state)
+                      end
+                    end
+                  '';
+                };
+                "o" = {
+                  __raw = ''
+                    function(state)
+                      local node = state.tree:get_node()
+                      if node.type == "file" then
+                        require("neo-tree.sources.filesystem.commands").open(state)
+                        require("neo-tree.command").execute({ action = "close" })
+                      else
+                        require("neo-tree.sources.filesystem.commands").toggle_node(state)
+                      end
+                    end
+                  '';
+                };
               };
             };
             filesystem = {
@@ -52,17 +76,7 @@
               };
               use_libuv_file_watcher = true;
             };
-            event_handlers = [
-              {
-                event = "file_opened";
-                handler.__raw = ''
-                  function(file_path)
-                    -- Close neo-tree after opening a file
-                    require("neo-tree.command").execute({ action = "close" })
-                  end
-                '';
-              }
-            ];
+            event_handlers = [];
           };
         };
       };

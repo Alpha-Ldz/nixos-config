@@ -8,18 +8,12 @@
 
   powerManagement = {
     enable = true;
-    cpuFreqGovernor = lib.mkDefault "powersave";
+    cpuFreqGovernor = lib.mkDefault "schedutil";
   };
 
   # Laptop-specific services
-  services.logind = {
-    settings = {
-      Login = {
-        HandleLidSwitch = "suspend";
-        HandleLidSwitchExternalPower = "lock";
-      };
-    };
-  };
+  services.logind.lidSwitch = "lock";
+  services.logind.lidSwitchExternalPower = "lock";
 
   # Touchpad
   services.libinput.enable = true;

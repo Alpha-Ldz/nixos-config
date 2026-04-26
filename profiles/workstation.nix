@@ -24,7 +24,14 @@
   };
 
   # Graphics
-  hardware.graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver   # iHD pour Intel Gen 8+
+      intel-vaapi-driver   # i965 fallback
+      libvdpau-va-gl
+    ];
+  };
 
   # Desktop packages
   environment.systemPackages = with pkgs; [

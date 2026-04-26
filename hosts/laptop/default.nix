@@ -8,8 +8,8 @@
 
     # Features - optional capabilities
     ../../features/desktop/hyprland.nix
-    ../../features/hardware/nvidia.nix
     ../../features/services/docker.nix
+    ../../features/services/ssh.nix
 
     # Hardware and users
     ./hardware-configuration.nix
