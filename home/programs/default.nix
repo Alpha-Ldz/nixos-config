@@ -12,5 +12,6 @@
     ./development/uv.nix
     ./development/github.nix
     ./development/cuda.nix
+    ./development/kicad.nix
   ];
 }
