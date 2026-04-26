@@ -10,6 +10,7 @@
     ../../features/desktop/hyprland.nix
     ../../features/services/docker.nix
     ../../features/services/ssh.nix
+    ../../features/services/tailscale.nix
 
     # Hardware and users
     ./hardware-configuration.nix
