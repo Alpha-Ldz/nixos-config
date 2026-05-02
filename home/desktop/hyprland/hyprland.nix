@@ -9,6 +9,7 @@
     settings = {
       monitor = [
         "eDP-1, disable"
+        "HDMI-A-2, 3840x1080, auto, 1"
         ", preferred, 0x0, 1"
       ];
 
@@ -136,9 +137,6 @@
         "size 640 360, title:^(Picture-in-Picture)$"
         "move 100%-w-20 100%-w-20, title:^(Picture-in-Picture)$"
       ];
-
-      monitor = "HDMI-A-2, 3840x1080, auto, 1";
-
 
     };
   };
