@@ -1,0 +1,70 @@
+● État du disque                                                                                                                                                                            
+                                                                                                                                                                                            
+  nvme0n1 (931 GB)                                                                                                                                                                          
+  ├─ p1   200M   EFI/boot     ✓ garder                                                                                                                                                      
+  ├─ p2    16M   MS Reserved  → supprimer                                                                                                                                                   
+  ├─ p3   647G   Windows      → supprimer (NTFS)                                                                                                                                            
+  ├─ p4   735M   Recovery     → supprimer                                                                                                                                                   
+  └─ p5   283G   NixOS (/)    ✓ étendre                                                                                                                                                     
+                                                                                                                                                                                            
+  Problème: Ta partition Linux (p5) est après Windows (p3). On ne peut pas simplement étendre vers la gauche à chaud.                                                                       
+                                                                                                                                                                                            
+  Options                                                                                                                                                                                   
+  ┌─────────────────────────────────┬────────────┬─────────────┐                                                                                                                            
+  │             Option              │ Difficulté │   Risque    │                                                                                                                            
+  ├─────────────────────────────────┼────────────┼─────────────┤                                                                                                                            
+  │ A. Live USB + GParted           │ Facile     │ Faible      │                                                                                                                            
+  ├─────────────────────────────────┼────────────┼─────────────┤                                                                                                                            
+  │ B. Nouvelle partition + symlink │ Moyen      │ Très faible │                                                                                                                            
+  └─────────────────────────────────┴────────────┴─────────────┘                                                                                                                            
+  Option A - Live USB (recommandé)                                                                                                                                                          
+                                                                                                                                                                                            
+  1. Créer une clé USB bootable (NixOS minimal ou GParted Live)                                                                                                                             
+  2. Booter dessus                                                                                                                                                                          
+  3. Supprimer p2, p3, p4                                                                                                                                                                   
+  4. Déplacer p5 vers la gauche                                                                                                                                                             
+  5. Étendre p5                                                                                                                                                                             
+                                                                                                                                                                                            
+  Option B - Garder la structure, utiliser l'espace                                                                                                                                         
+                                                                                                                                                                                            
+  1. Supprimer p3/p4, créer une nouvelle partition                                                                                                                                          
+  2. Monter sur /mnt/data ou /var/lib/ollama                                                                                                                                                
+  3. Pas besoin de reboot                                                                                                                                                                   
+                                                                                                                                                                                            
+  Quelle option tu préfères ?                                                                                                                                                               
+                                                                                                                                                                                            
+❯ L'option A est safe ?                                                                                                                                                                     
+                                                                                                                                                                                            
+● Relativement safe, mais pas sans risque. Voici le détail:                                                                                                                                 
+                                                                                                                                                                                            
+  Risques réels                                                                                                                                                                             
+  ┌────────────────────────────┬───────────┬──────────────────────┐                                                                                                                         
+  │         Opération          │  Risque   │ Conséquence si échec │                                                                                                                         
+  ├────────────────────────────┼───────────┼──────────────────────┤                                                                                                                         
+  │ Supprimer p2, p3, p4       │ ✅ Aucun  │ -                    │                                                                                                                         
+  ├────────────────────────────┼───────────┼──────────────────────┤                                                                                                                         
+  │ Déplacer p5 vers la gauche │ ⚠️ Moyen  │ Perte de données     │                                                                                                                         
+  ├────────────────────────────┼───────────┼──────────────────────┤                                                                                                                         
+  │ Étendre p5                 │ ✅ Faible │ -                    │                                                                                                                         
+  └────────────────────────────┴───────────┴──────────────────────┘                                                                                                                         
+  Le déplacement est l'opération risquée - ça copie 283 GB bit par bit. Si interruption (coupure courant, crash):                                                                           
+  - Partition corrompue                                                                                                                                                                     
+  - Données perdues                                                                                                                                                                         
+                                                                                                                                                                                            
+  Précautions obligatoires                                                                                                                                                                  
+                                                                                                                                                                                            
+  1. Backup des fichiers importants (config NixOS, données perso)                                                                                                                           
+  2. Laptop sur secteur / PC sur onduleur                                                                                                                                                   
+  3. Ne pas toucher pendant l'opération (~30-60 min)                                                                                                                                        
+                                                                                                                                                                                            
+  Alternative plus safe: Option B                                                                                                                                                           
+                                                                                                                                                                                            
+  Pas de déplacement, juste:                                                                                                                                                                
+  p1 [EFI] | p5 [NixOS 283G] | p6 [NOUVEAU 647G]                                                                                                                                            
+                                                                                                                                                                                            
+  Monter /var/lib/ollama sur p6 → tes modèles vont là-bas.                                                                                                                                  
+                                                                                                                                                                                            
+  Zéro risque, juste moins "propre".                                                                                                                                                        
+                                                                                                                                                                                            
+  ---                                                                                                                                                                                       
+  Tu as des données importantes non sauvegardées sur ce PC ?

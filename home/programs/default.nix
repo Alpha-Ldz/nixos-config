@@ -1,8 +1,17 @@
 {
   imports = [
     ./common.nix
-    ./browser.nix
+    ./browsers/firefox.nix
     ./shell
-    ./nixvim
+    ./others
+    ./editors/nixvim
+    ./development/kubernetes.nix
+    ./development/nodejs.nix
+    ./development/poetry.nix
+    ./development/docker.nix
+    ./development/uv.nix
+    ./development/github.nix
+    ./development/cuda.nix
+    ./development/kicad.nix
   ];
 }

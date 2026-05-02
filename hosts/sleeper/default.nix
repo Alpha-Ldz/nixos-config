@@ -1,65 +1,162 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ 
-      ../../modules/system.nix
-      ../../modules/desktop.nix
-      ../../modules/hyprland.nix
+  versions,
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}: {
+  imports = [
+    # Profiles - define what kind of machine this is
+    ../../profiles/base.nix
+    ../../profiles/gaming.nix
+    ../../profiles/development.nix
 
-      ./hardware-configuration.nix
-    ];
+    # Features - optional capabilities
+    ../../features/desktop/hyprland.nix
+    ../../features/hardware/nvidia.nix
+    ../../features/services/docker.nix
+    ../../features/services/ollama-server.nix  # Ollama natif avec GPU (même config en desktop et k3s-server)
+    ../../features/services/ssh.nix
+    ../../features/services/thermal-monitor.nix
+    ../../features/services/vnc.nix
 
-  # Bootloader.
+    # Hardware and users
+    ./hardware-configuration.nix
+    ./users.nix
+  ];
+
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "sleeper"; # Define your hostname.
+  # Use kernel 6.12 for RTX 5090 support (6.18 too new, no drivers)
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
 
-  # TODO Move networking config here 
+  # NVIDIA kernel parameters for RTX 5090
+  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
 
-  # Set your time zone.
+  # Kernel modules: NVIDIA (RTX 5090 with open source driver) + iSCSI (Longhorn)
+  boot.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" "iscsi_tcp" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.stable ];
+
+  # Machine-specific settings
+  networking.hostName = "sleeper";
   time.timeZone = "Europe/Paris";
 
-  system.stateVersion = "24.05"; # Did you read the comment?
-  hardware.nvidia.package = let 
-  rcu_patch = pkgs.fetchpatch {
-    url = "https://github.com/gentoo/gentoo/raw/c64caf53/x11-drivers/nvidia-drivers/files/nvidia-drivers-470.223.02-gpl-pfn_valid.patch";
-    hash = "sha256-eZiQQp2S/asE7MfGvfe6dA/kdCvek9SYa/FFGp24dVg=";
+  # nixpkgs configuration
+  nixpkgs.config = {
+    allowUnfree = true;
+    # Accept NVIDIA Data Center driver license
+    nvidia.acceptLicense = true;
   };
 
-  in config.boot.kernelPackages.nvidiaPackages.mkDriver {
-    version = "550.40.07";
-    sha256_64bit = "sha256-KYk2xye37v7ZW7h+uNJM/u8fNf7KyGTZjiaU03dJpK0=";
-    sha256_aarch64 = "sha256-AV7KgRXYaQGBFl7zuRcfnTGr8rS5n13nGUIe3mJTXb4=";
-    openSha256 = "sha256-mRUTEWVsbjq+psVe+kAT6MjyZuLkG2yRDxCMvDJRL1I=";
-    settingsSha256 = "sha256-c30AQa4g4a1EHmaEu1yc05oqY01y+IusbBuq+P6rMCs=";
-    persistencedSha256 = "sha256-11tLSY8uUIl4X/roNnxf5yS2PQvHvoNjnd2CB67e870=";
-
-    patches = [ rcu_patch ];
-  };
-
-
-  environment.systemPackages = [
-    pkgs.unstable.ollama
-    pkgs.steam
+  # Add nixpkgs-unstable overlay for Ollama (needed in both modes)
+  nixpkgs.overlays = [
+    (final: prev: {
+      unstable = import inputs.nixpkgs-unstable {
+        system = prev.system;
+        config.allowUnfree = true;
+      };
+    })
   ];
 
-  services.sunshine = {
+  # Enable iSCSI support for Longhorn (needed for both desktop and k3s-server modes)
+  services.openiscsi = {
     enable = true;
-    #package = pkgs.sunshine.override {
-    #  cudaSupport = true;
-    #};
-    autoStart = true;
-    capSysAdmin = true;
-    openFirewall = true;
+    name = "iqn.2016-04.com.open-iscsi:sleeper";
   };
-  services.avahi.publish.enable = true;
-  services.avahi.publish.userServices = true;
 
+  # Thermal and power monitoring with notifications (desktop mode)
+  services.thermal-monitor.enable = true;
 
+  # Create symlinks for Longhorn to find iSCSI tools (NixOS-specific)
+  system.activationScripts.longhornIscsiLinks = ''
+    mkdir -p /usr/bin /sbin
+    ln -sf /run/current-system/sw/bin/iscsiadm /usr/bin/iscsiadm
+    ln -sf /run/current-system/sw/bin/iscsiadm /sbin/iscsiadm
+  '';
+
+  system.stateVersion = versions.nixos;
+
+  # Specialisation: K3S Agent Mode
+  # This creates a second boot entry for headless k3s agent that joins an existing cluster
+  # GPU 100% dedicated to k3s, Ollama and other LLM workloads are managed by K3S
+  specialisation.k3s-server = {
+    inheritParentConfig = false;
+
+    configuration = { config, pkgs, lib, inputs, versions, ... }: {
+      imports = [
+        # Base system
+        ../../profiles/base.nix
+        ../../profiles/k3s-server.nix
+
+        # Server features
+        ../../features/hardware/nvidia-headless.nix
+        ../../features/services/k3s-agent.nix
+        ../../features/services/ssh.nix
+        ../../features/services/ollama-server.nix  # Ollama natif avec GPU
+        ../../features/services/thermal-monitor.nix
+
+        # K3S cluster configuration (server URL and token)
+        ./k3s-cluster-config.nix
+
+        # Hardware and users (shared with desktop)
+        ./hardware-configuration.nix
+        ./users.nix
+      ];
+
+      # nixpkgs configuration
+      nixpkgs.config = {
+        allowUnfree = true;
+        # Accept NVIDIA Data Center driver license
+        nvidia.acceptLicense = true;
+      };
+
+      # Add nixpkgs-unstable overlay for Ollama
+      nixpkgs.overlays = [
+        (final: prev: {
+          unstable = import inputs.nixpkgs-unstable {
+            system = prev.system;
+            config.allowUnfree = true;
+          };
+        })
+      ];
+
+      # Bootloader (must be redefined when inheritParentConfig = false)
+      boot.loader.systemd-boot.enable = true;
+      boot.loader.efi.canTouchEfiVariables = true;
+
+      # Use kernel 6.12 for RTX 5090 support (6.18 too new, no drivers)
+      boot.kernelPackages = pkgs.linuxPackages_6_12;
+
+      # NVIDIA kernel parameters for RTX 5090
+      boot.kernelParams = [ "nvidia-drm.modeset=1" ];
+
+      # Kernel modules: NVIDIA (RTX 5090 with open source driver) + iSCSI (Longhorn)
+      boot.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" "iscsi_tcp" ];
+      boot.extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.stable ];
+
+      # Enable iSCSI support for Longhorn (must be redefined when inheritParentConfig = false)
+      services.openiscsi = {
+        enable = true;
+        name = "iqn.2016-04.com.open-iscsi:sleeper";
+      };
+
+      # Create symlinks for Longhorn to find iSCSI tools
+      system.activationScripts.longhornIscsiLinks = ''
+        mkdir -p /usr/bin /sbin
+        ln -sf /run/current-system/sw/bin/iscsiadm /usr/bin/iscsiadm
+        ln -sf /run/current-system/sw/bin/iscsiadm /sbin/iscsiadm
+      '';
+
+      # Thermal and power monitoring (headless mode - logs only, no notifications)
+      services.thermal-monitor.enable = true;
+
+      # Machine settings (must be redefined)
+      networking.hostName = "sleeper";
+      time.timeZone = "Europe/Paris";
+      system.stateVersion = versions.nixos;
+    };
+  };
 }

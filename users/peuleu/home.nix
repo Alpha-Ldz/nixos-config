@@ -1,14 +1,28 @@
-{pkgs, inputs, ...}: {
+{ pkgs, inputs, lib, config, isLinux, isDarwin, ... }:
+{
   imports = [
-    ../../home/core.nix
-    ../../home/hyprland
+    # Core home-manager config
+    ../../home/profiles/base.nix
 
+    # Programs (cross-platform)
     ../../home/programs
+  ] ++ lib.optionals isLinux [
+    # Linux-specific
+    ../../home/desktop/hyprland
+    ../../home/platform/linux.nix
+  ] ++ lib.optionals isDarwin [
+    # macOS-specific
+    ../../home/platform/macos.nix
   ];
-  programs = { 
-	  git = {
-			userName = "Alpha-Ldz";
-			userEmail = "pllandouzi@gmail.com";
-	  };
+
+  # User-specific git config
+  programs.git.settings = {
+    user.name = "Alpha-Ldz";
+    user.email = "pllandouzi@gmail.com";
+  };
+
+  # Kubernetes configuration
+  home.sessionVariables = {
+    KUBECONFIG = "$HOME/.kube/config";
   };
 }
