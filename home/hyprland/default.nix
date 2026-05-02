@@ -7,6 +7,11 @@
     enable = true;
     systemd.variables = ["--all"];
     settings = {
+      monitor = [
+        "eDP-1, disable"
+        ", preferred, 0x0, 1"
+      ];
+
       "$mod" = "SUPER";
       "$modS" = "SUPER SHIFT";
       bindm = [

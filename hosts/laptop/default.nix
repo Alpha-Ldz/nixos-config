@@ -6,8 +6,9 @@
 
 {
   imports =
-    [ 
+    [
       ../../modules/system.nix
+      ../../modules/hyprland.nix
 
       ./hardware-configuration.nix
     ];

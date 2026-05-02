@@ -6,9 +6,9 @@
 
 {
   imports =
-    [ 
+    [
       ../../modules/system.nix
-      ../../modules/k3s.nix
+      ../../modules/hyprland.nix
 
       ./hardware-configuration.nix
     ];
@@ -17,7 +17,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos-node-1"; # Define your hostname.
+  networking.hostName = "laptop"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

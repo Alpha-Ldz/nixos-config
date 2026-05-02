@@ -2,6 +2,10 @@
   pkgs,
   ...
 }: {
+  home.packages = [
+    pkgs.unstable.claude-code
+  ];
+
   programs = {
     zsh = {
       enable = true;
