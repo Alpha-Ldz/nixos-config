@@ -9,7 +9,7 @@
     settings = {
       monitor = [
         "eDP-1, disable"
-        "HDMI-A-2, 3840x1080, auto, 1"
+        "HDMI-A-1, 3840x1080@59.97, 0x0, 1"
         ", preferred, 0x0, 1"
       ];
 
