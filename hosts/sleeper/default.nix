@@ -20,6 +20,7 @@
     ../../features/services/ssh.nix
     ../../features/services/thermal-monitor.nix
     ../../features/services/vnc.nix
+    ../../features/services/sunshine.nix
 
     # Hardware and users
     ./hardware-configuration.nix

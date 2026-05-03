@@ -1,4 +1,4 @@
-{ versions, ... }:
+{ versions, pkgs, ... }:
 {
   imports = [
     ../../profiles/base.nix
@@ -21,6 +21,8 @@
   time.timeZone = "Europe/Paris";
 
   zramSwap.enable = true;
+
+  environment.systemPackages = [ pkgs.moonlight-qt ];
 
   system.stateVersion = versions.nixos;
 }
