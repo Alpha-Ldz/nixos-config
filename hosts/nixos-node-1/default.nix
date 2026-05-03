@@ -8,6 +8,7 @@
     ../../features/desktop/hyprland.nix
     ../../features/services/docker.nix
     ../../features/services/ssh.nix
+    ../../features/services/tailscale.nix
 
     ./hardware-configuration.nix
     ./users.nix
