@@ -19,5 +19,8 @@
   networking.hostName = "nixos-node-1";
   time.timeZone = "Europe/Paris";
 
+  zramSwap.enable = true;
+  services.preload.enable = true;
+
   system.stateVersion = versions.nixos;
 }
