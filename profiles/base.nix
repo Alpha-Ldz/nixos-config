@@ -41,9 +41,13 @@
   # Networking
   networking.networkmanager.enable = true;
 
+  # Tailscale
+  services.tailscale.enable = true;
+
   # Bluetooth
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
 
   # Enable zsh
   programs.zsh.enable = true;

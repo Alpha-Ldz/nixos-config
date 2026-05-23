@@ -9,5 +9,6 @@
     ./development/nodejs.nix
     ./development/poetry.nix
     ./development/docker.nix
+    ./development/android.nix
   ];
 }

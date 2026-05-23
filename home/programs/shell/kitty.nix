@@ -10,8 +10,8 @@
     enable = lib.mkIf isLinux true;
 
     font = {
-      name = "Fira Code";
-      size = 12;
+      name = "FiraCode Nerd Font";
+      size = 16;
     };
 
     settings = {

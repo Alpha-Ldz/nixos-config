@@ -46,6 +46,9 @@
       ll = "ls -l";
       configuration = "sudo -E -s nvim /etc/nixos/configuration.nix";
       update = "sudo nixos-rebuild switch";
+      wm = "cd ~/Freedom35/worker-manager && uv run worker-manager";
+      f35 = "cd ~/Freedom35 && uv run freedom35";
+      start-android-emulator = "cd /nix/store/vs104ig181v47lbzy4h6mb972xjr809s-androidsdk/libexec/android-sdk/emulator && ./emulator -avd Pixel_5_API_35 -gpu swiftshader_indirect";
     };
 
     history = {

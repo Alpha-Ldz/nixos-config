@@ -3,6 +3,7 @@
   ...
 } : {
   imports = [
+    ./direnv.nix
     ./kitty.nix
     ./starship.nix
     ./zsh.nix

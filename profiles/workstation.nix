@@ -8,19 +8,29 @@
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-color-emoji
+    nerd-fonts.fira-code
   ];
 
   # Audio
   security.rtkit.enable = true;
-  services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
-    audio.enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
-    wireplumber.enable = true;
+  };
+
+  # Restore ALSA state on boot
+  systemd.services.alsa-store = {
+    description = "Store ALSA state";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "sound.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.alsa-utils}/bin/alsactl restore";
+      RemainAfterExit = true;
+    };
   };
 
   # Graphics
@@ -31,5 +41,7 @@
     kitty
     rofi
     pavucontrol
+    alsa-utils
+    xfce.thunar
   ];
 }

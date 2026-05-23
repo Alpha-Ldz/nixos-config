@@ -24,6 +24,7 @@
         "$mod, down, movefocus, d"
         "$mod, D, exec, rofi -show drun"
         "$mod, L, exec, hyprlock"
+        "$mod, S, exec, systemctl suspend"
         "$mod, M, exit"
         "$mod, T, exec, toggle-theme"
 
@@ -34,6 +35,18 @@
           # Windaube Shift shortcuts
         "$modS, F, fullscreen"
         "$modS, Q, killactive"
+
+        # Master layout controls
+        "$mod, J, layoutmsg, cyclenext"
+        "$mod, K, layoutmsg, cycleprev"
+        "$modS, J, layoutmsg, swapnext"
+        "$modS, K, layoutmsg, swapprev"
+        "$mod, SPACE, layoutmsg, swapwithmaster"
+        "$mod, equal, layoutmsg, addmaster"
+        "$mod, minus, layoutmsg, removemaster"
+
+        # Toggle entre layout master et dwindle
+        "$mod, P, exec, hyprctl keyword general:layout \"$(hyprctl getoption general:layout | grep -q 'master' && echo 'dwindle' || echo 'master')\""
         ]
         ++ (
           # workspaces
@@ -65,11 +78,18 @@
         gaps_out = 10;
         border_size = 2;
         no_border_on_floating = false;
-        layout = "dwindle";
+        layout = "master";
 
         # Bluloco theme colors for borders
         "col.active_border" = "rgba(10b0feee) rgba(ff78f8ee) 45deg";  # Blue to magenta gradient
         "col.inactive_border" = "rgba(42444daa)";  # Gray
+      };
+
+      master = {
+        # Configuration pour layout 25% / 50% / 25%
+        new_status = "master";  # Les nouvelles fenêtres deviennent master par défaut
+        mfact = 0.50;  # La fenêtre master prend 50% de l'écran
+        orientation = "center";  # Fenêtre master au centre
       };
 
       misc = {
