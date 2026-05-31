@@ -70,4 +70,12 @@ in
       { command = "/run/current-system/sw/bin/systemctl restart ollama"; options = [ "NOPASSWD" ]; }
     ];
   }];
+
+  # GPU watchdog: monitor and auto-recover ollama if GPU issues detected
+  services.cron = {
+    enable = true;
+    systemCronJobs = [
+      "*/5 * * * * peuleu /home/peuleu/ai-dev-platform/scripts/gpu-watchdog.sh"
+    ];
+  };
 }
