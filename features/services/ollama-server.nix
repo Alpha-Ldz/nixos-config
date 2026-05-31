@@ -26,7 +26,31 @@ in
 
     # GPU acceleration (CUDA for NVIDIA)
     acceleration = "cuda";
+
+    # Preload models at startup
+    loadModels = [ "qwen3-coder:30b" ];
+
+    # Performance tuning for RTX 5090 (32 GB VRAM)
+    environmentVariables = {
+      # Allow 4 concurrent requests (large VRAM budget)
+      OLLAMA_NUM_PARALLEL = "4";
+
+      # Keep up to 2 models loaded simultaneously
+      OLLAMA_MAX_LOADED_MODELS = "2";
+
+      # Unload models after 5min of inactivity (saves VRAM/power)
+      OLLAMA_KEEP_ALIVE = "5m";
+
+      # Optional: force CUDA device selection (usually auto-detected)
+      # CUDA_VISIBLE_DEVICES = "0";
+    };
   };
 
-  networking.firewall.allowedTCPPorts = [11434];
+  # Fix GPU detection race condition: wait for nvidia-persistenced before starting Ollama
+  systemd.services.ollama = {
+    after = [ "nvidia-persistenced.service" ];
+    wants = [ "nvidia-persistenced.service" ];
+  };
+
+  networking.firewall.allowedTCPPorts = [ 11434 ];
 }
