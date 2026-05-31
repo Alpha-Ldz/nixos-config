@@ -9,7 +9,10 @@ let
   # Use unstable nixpkgs for latest ollama version (0.18.0 vs 0.12.11 in stable)
   pkgs-unstable = import inputs.nixpkgs-unstable {
     inherit (pkgs) system;
-    config.allowUnfree = true;
+    config = {
+      allowUnfree = true;
+      cudaSupport = true;  # Required for CUDA-enabled ollama build
+    };
   };
 in
 {
@@ -47,10 +50,24 @@ in
   };
 
   # Fix GPU detection race condition: wait for nvidia-persistenced before starting Ollama
+  # Also inject LD_LIBRARY_PATH for CUDA libs (NixOS module doesn't do this automatically)
   systemd.services.ollama = {
     after = [ "nvidia-persistenced.service" ];
     wants = [ "nvidia-persistenced.service" ];
+    environment = {
+      # Critical: tell Ollama where to find libcuda.so and other NVIDIA libs
+      LD_LIBRARY_PATH = "/run/opengl-driver/lib";
+    };
   };
 
   networking.firewall.allowedTCPPorts = [ 11434 ];
+
+  # Allow user to restart ollama without password (useful for debugging)
+  security.sudo.extraRules = [{
+    users = [ "peuleu" ];
+    commands = [
+      { command = "/run/current-system/sw/bin/systemctl start ollama"; options = [ "NOPASSWD" ]; }
+      { command = "/run/current-system/sw/bin/systemctl restart ollama"; options = [ "NOPASSWD" ]; }
+    ];
+  }];
 }
