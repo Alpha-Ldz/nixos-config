@@ -26,7 +26,11 @@
   ];
 
   # Bootloader
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot = {
+    enable = true;
+    # Limiter le nombre de générations affichées
+    configurationLimit = 15;
+  };
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Use kernel 6.12 for RTX 5090 support (6.18 too new, no drivers)
